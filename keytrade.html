@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keytrade Bank | Slice League Partner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body.keytrade-page {
+      --kt-navy: #263746;
+      --kt-ink: #253443;
+      --kt-muted: #5e7280;
+      --kt-blue: #007d96;
+      --kt-cyan: #2fc9df;
+      --kt-yellow: #ffd83d;
+      --kt-paper: #f3f8fa;
+      --kt-line: rgba(38, 55, 70, 0.12);
+      background: #f6fafb;
+      color: var(--kt-ink);
+      background-image: none;
+    }
+    .keytrade-page .nav {
+      background: rgba(12, 10, 26, 0.92);
+    }
+    .kt-topline {
+      background: var(--kt-navy);
+      color: rgba(255,255,255,.82);
+      font-size: .78rem;
+      padding: 8px 0;
+    }
+    .kt-topline-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 24px;
+      font-weight: 600;
+    }
+    .kt-shell {
+      background: var(--kt-paper);
+      color: var(--kt-ink);
+    }
+    .kt-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .kt-hero {
+      min-height: 660px;
+      padding: 86px 64px 76px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(420px, .9fr);
+      gap: 56px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .kt-eyebrow {
+      color: #607889;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-size: .82rem;
+      margin-bottom: 16px;
+    }
+    .kt-hero h1 {
+      color: var(--kt-navy);
+      font-family: var(--font-head);
+      font-size: clamp(3.4rem, 7vw, 6.2rem);
+      line-height: .98;
+      letter-spacing: 0;
+      margin-bottom: 24px;
+      max-width: 720px;
+    }
+    .kt-hero h1 span {
+      color: var(--kt-blue);
+    }
+    .kt-copy {
+      color: var(--kt-muted);
+      font-size: 1.08rem;
+      line-height: 1.8;
+      max-width: 620px;
+      margin-bottom: 30px;
+    }
+    .kt-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .kt-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 12px 22px;
+      border-radius: 7px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .kt-btn:hover { transform: translateY(-1px); }
+    .kt-btn-primary {
+      background: var(--kt-blue);
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(0,125,150,.18);
+    }
+    .kt-btn-primary:hover { background: #006d84; color: #fff; }
+    .kt-btn-ghost {
+      color: var(--kt-blue);
+      background: transparent;
+      border-color: transparent;
+    }
+    .kt-btn-ghost:hover { color: var(--kt-navy); }
+    .kt-card-stack {
+      position: relative;
+      min-height: 520px;
+    }
+    .kt-shape {
+      position: absolute;
+      inset: 0 0 auto auto;
+      width: min(92%, 520px);
+      height: 520px;
+      background: linear-gradient(140deg, #42d4e7, #009db5);
+      border-radius: 36% 10% 36% 10%;
+      transform: rotate(4deg);
+      box-shadow: 0 38px 80px rgba(0,125,150,.2);
+    }
+    .kt-phone {
+      position: absolute;
+      right: 38px;
+      top: 58px;
+      width: min(78%, 390px);
+      background: #fff;
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 32px 70px rgba(38,55,70,.24);
+      border: 1px solid rgba(255,255,255,.7);
+    }
+    .kt-phone-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .kt-bank-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--kt-navy);
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+    .kt-bank-logo img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+    }
+    .kt-balance {
+      background: #edf7f9;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(0,125,150,.1);
+    }
+    .kt-balance-label {
+      color: var(--kt-muted);
+      font-size: .78rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .kt-balance-value {
+      color: var(--kt-navy);
+      font-family: var(--font-head);
+      font-size: 2.2rem;
+      font-weight: 800;
+    }
+    .kt-mini-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--kt-line);
+    }
+    .kt-mini-row:last-child { border-bottom: 0; }
+    .kt-mini-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #f0f6f8;
+      color: var(--kt-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kt-mini-title {
+      font-weight: 800;
+      color: var(--kt-navy);
+      line-height: 1.2;
+    }
+    .kt-mini-sub {
+      font-size: .78rem;
+      color: var(--kt-muted);
+    }
+    .kt-mini-value {
+      color: var(--kt-blue);
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: .9rem;
+    }
+    .kt-band {
+      background: #fff;
+      border-top: 1px solid var(--kt-line);
+      border-bottom: 1px solid var(--kt-line);
+      padding: 34px 0;
+    }
+    .kt-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--kt-line);
+      border: 1px solid var(--kt-line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .kt-stat {
+      background: #fff;
+      padding: 26px 24px;
+    }
+    .kt-stat strong {
+      display: block;
+      color: var(--kt-navy);
+      font-family: var(--font-head);
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .kt-stat span {
+      color: var(--kt-muted);
+      font-size: .82rem;
+      font-weight: 700;
+    }
+    .kt-section {
+      padding: 82px 0;
+      background: #fff;
+    }
+    .kt-section.alt {
+      background: #f6fafb;
+    }
+    .kt-section-head {
+      max-width: 720px;
+      margin-bottom: 34px;
+    }
+    .kt-section-kicker {
+      color: var(--kt-blue);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .kt-section h2 {
+      color: var(--kt-navy);
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+      margin-bottom: 14px;
+    }
+    .kt-section p {
+      color: var(--kt-muted);
+      line-height: 1.8;
+      font-size: .98rem;
+    }
+    .kt-product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .kt-product {
+      background: #fff;
+      border: 1px solid var(--kt-line);
+      border-radius: 10px;
+      padding: 28px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 14px 34px rgba(38,55,70,.06);
+    }
+    .kt-product.alt {
+      background: #f8fcfd;
+    }
+    .kt-product i {
+      color: var(--kt-blue);
+      font-size: 1.5rem;
+    }
+    .kt-product h3 {
+      color: var(--kt-navy);
+      font-family: var(--font-head);
+      font-size: 1.35rem;
+      line-height: 1.15;
+    }
+    .kt-product p {
+      font-size: .9rem;
+      margin: 0;
+    }
+    .kt-promo {
+      background: var(--kt-navy);
+      color: #fff;
+      border-radius: 14px;
+      padding: 42px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 34px;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .kt-promo::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 48% 16% 48% 16%;
+      background: var(--kt-cyan);
+      opacity: .9;
+      transform: rotate(12deg);
+    }
+    .kt-promo h2 {
+      color: #fff;
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      margin-bottom: 12px;
+    }
+    .kt-promo p {
+      color: rgba(255,255,255,.78);
+      max-width: 620px;
+      margin-bottom: 0;
+    }
+    .kt-promo-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .kt-btn-yellow {
+      background: var(--kt-yellow);
+      color: var(--kt-navy);
+    }
+    .kt-btn-yellow:hover { color: var(--kt-navy); background: #ffe15f; }
+    .kt-partner {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 42px;
+      align-items: center;
+    }
+    .kt-slice-card {
+      background: #fff;
+      border: 1px solid var(--kt-line);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 18px 44px rgba(38,55,70,.08);
+    }
+    .kt-slice-card img {
+      width: 160px;
+      margin-bottom: 24px;
+    }
+    .kt-pill-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .kt-pill {
+      border: 1px solid rgba(0,125,150,.22);
+      background: #eef8fa;
+      color: var(--kt-blue);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    @media (max-width: 980px) {
+      .kt-hero,
+      .kt-partner,
+      .kt-promo {
+        grid-template-columns: 1fr;
+      }
+      .kt-card-stack { min-height: 480px; }
+      .kt-product-grid,
+      .kt-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .kt-promo-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .kt-container,
+      .kt-topline-inner { padding: 0 20px; }
+      .kt-topline-inner { justify-content: flex-start; overflow-x: auto; }
+      .kt-hero { min-height: auto; padding: 58px 20px 52px; }
+      .kt-card-stack { min-height: 420px; }
+      .kt-phone { right: 0; width: 92%; }
+      .kt-product-grid,
+      .kt-stats {
+        grid-template-columns: 1fr;
+      }
+      .kt-promo { padding: 30px; }
+    }
+  </style>
+</head>
+<body class="keytrade-page">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
+      SLICE <span>LEAGUE</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="bracket.html">Bracket</a>
+      <a href="players.html">Players</a>
+      <a href="teams.html">Teams</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="keytrade.html" class="active">Keytrade</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/slice.esport/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@slice.esport" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.twitch.tv/yf7_bs" target="_blank" rel="noopener"><i class="fab fa-twitch"></i></a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="bracket.html">Bracket</a>
+  <a href="players.html">Players</a>
+  <a href="teams.html">Teams</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="keytrade.html" class="active">Keytrade</a>
+</div>
+
+<main class="kt-shell">
+  <div class="kt-topline">
+    <div class="kt-topline-inner">
+      <span>Banking</span>
+      <span>Investing</span>
+      <span>Borrowing</span>
+      <span>Become a client</span>
+    </div>
+  </div>
+
+  <section class="kt-hero kt-container">
+    <div>
+      <div class="kt-eyebrow">Official partner</div>
+      <h1>Born digital. Backing Belgian <span>competition.</span></h1>
+      <p class="kt-copy">
+        Keytrade Bank brings its digital-first banking mindset to Slice League: practical tools,
+        transparent investing, and support for a Belgian esports community built online.
+      </p>
+      <div class="kt-actions">
+        <a class="kt-btn kt-btn-primary" href="https://www.keytradebank.be/en" target="_blank" rel="noopener">
+          Become a client <i class="fas fa-arrow-right"></i>
+        </a>
+        <a class="kt-btn kt-btn-ghost" href="#partnership">
+          See the partnership <i class="fas fa-chevron-down"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="kt-card-stack" aria-hidden="true">
+      <div class="kt-shape"></div>
+      <div class="kt-phone">
+        <div class="kt-phone-head">
+          <div class="kt-bank-logo">
+            <img src="assets/keytrade.png" alt="">
+            <span>KEYTRADE<br>BANK</span>
+          </div>
+          <i class="fas fa-lock" style="color:var(--kt-blue)"></i>
+        </div>
+        <div class="kt-balance">
+          <div class="kt-balance-label">Slice League partnership</div>
+          <div class="kt-balance-value">Season 2</div>
+        </div>
+        <div class="kt-mini-row">
+          <div class="kt-mini-icon"><i class="fas fa-wallet"></i></div>
+          <div><div class="kt-mini-title">Banking</div><div class="kt-mini-sub">Daily money tools</div></div>
+          <div class="kt-mini-value">Online</div>
+        </div>
+        <div class="kt-mini-row">
+          <div class="kt-mini-icon"><i class="fas fa-chart-line"></i></div>
+          <div><div class="kt-mini-title">Investing</div><div class="kt-mini-sub">Markets and funds</div></div>
+          <div class="kt-mini-value">Open</div>
+        </div>
+        <div class="kt-mini-row">
+          <div class="kt-mini-icon"><i class="fas fa-trophy"></i></div>
+          <div><div class="kt-mini-title">Slice League</div><div class="kt-mini-sub">Belgian esports</div></div>
+          <div class="kt-mini-value">Live</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="kt-band">
+    <div class="kt-container">
+      <div class="kt-stats">
+        <div class="kt-stat"><strong>1998</strong><span>Digital banking roots</span></div>
+        <div class="kt-stat"><strong>100%</strong><span>Online experience</span></div>
+        <div class="kt-stat"><strong>S2</strong><span>Slice League partner</span></div>
+        <div class="kt-stat"><strong>BE</strong><span>Belgian community focus</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="kt-section">
+    <div class="kt-container">
+      <div class="kt-section-head">
+        <div class="kt-section-kicker">Banking, investing, borrowing</div>
+        <h2>A clean digital bank experience, reworked for esports fans.</h2>
+        <p>
+          The Keytrade website is direct and product-led. This page follows that style:
+          clear choices, strong calls to action, and calm banking colors rather than a heavy
+          sponsor splash page.
+        </p>
+      </div>
+      <div class="kt-product-grid">
+        <article class="kt-product">
+          <i class="fas fa-credit-card"></i>
+          <h3>Banking without branch friction</h3>
+          <p>Open and manage your account online, with a clean app-first rhythm that matches a digital-native audience.</p>
+        </article>
+        <article class="kt-product alt">
+          <i class="fas fa-arrow-trend-up"></i>
+          <h3>Investing made readable</h3>
+          <p>Stocks, ETFs, funds and market tools are presented with the kind of clarity younger users expect.</p>
+        </article>
+        <article class="kt-product">
+          <i class="fas fa-house"></i>
+          <h3>Borrowing, when it matters</h3>
+          <p>Keytrade also covers bigger financial moments, with online information for loans and home financing.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="kt-section alt" id="partnership">
+    <div class="kt-container kt-partner">
+      <div class="kt-slice-card">
+        <img src="assets/logo.png" alt="Slice League">
+        <div class="kt-section-kicker">Keytrade x Slice League</div>
+        <h2 style="font-size:2.3rem;margin-bottom:14px;">A digital bank beside a digital sport.</h2>
+        <p>
+          Slice League is run, watched, and shared online. Keytrade fits that world naturally:
+          a Belgian brand known for doing money digitally, now backing Belgian Brawl Stars talent.
+        </p>
+        <div class="kt-pill-list">
+          <span class="kt-pill">Title sponsor</span>
+          <span class="kt-pill">Belgian esports</span>
+          <span class="kt-pill">Season 2</span>
+        </div>
+      </div>
+      <div>
+        <div class="kt-section-kicker">Why it fits</div>
+        <h2>Modern finance for a modern competitive scene.</h2>
+        <p>
+          The live Keytrade site leads with practical actions: become a client, log in, bank,
+          invest, borrow. This partner page now uses the same plainspoken structure and visual
+          language, then connects it back to Slice League without losing the tournament identity.
+        </p>
+        <div class="kt-pill-list">
+          <span class="kt-pill">Online-first</span>
+          <span class="kt-pill">Accessible</span>
+          <span class="kt-pill">Community-backed</span>
+          <span class="kt-pill">Clear actions</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kt-section">
+    <div class="kt-container">
+      <div class="kt-promo">
+        <div style="position:relative;z-index:1;">
+          <div class="kt-section-kicker" style="color:var(--kt-cyan)">Promo</div>
+          <h2>Do you fancy becoming a client?</h2>
+          <p>
+            Visit Keytrade Bank to see the current account offers, conditions, and product details
+            directly from the source.
+          </p>
+        </div>
+        <div class="kt-promo-actions">
+          <a class="kt-btn kt-btn-yellow" href="https://www.keytradebank.be/en" target="_blank" rel="noopener">
+            Visit Keytrade <i class="fas fa-arrow-right"></i>
+          </a>
+          <a class="kt-btn kt-btn-ghost" style="color:#fff" href="https://www.keytradebank.be/en/support" target="_blank" rel="noopener">
+            Support
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><div class="logo-icon"><img src="assets/logo.png" alt=""></div>SLICE <span style="color:var(--clr-accent)">LEAGUE</span></div>
+        <p class="footer-brand-desc">Belgium's premier Brawl Stars esports tournament, proudly partnered with Keytrade Bank.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/slice.esport/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@slice.esport" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.twitch.tv/yf7_bs" target="_blank" rel="noopener"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Keytrade</div><ul><li><a href="https://www.keytradebank.be/en" target="_blank" rel="noopener">Website</a></li><li><a href="https://www.keytradebank.be/en/support" target="_blank" rel="noopener">Support</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">Copyright 2026 Slice League</span>
+      <span class="footer-powered">Organized by <span>Nikounaki</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

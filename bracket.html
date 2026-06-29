@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bracket · Slice League</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Tournament chooser */
+    .tourney-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .tourney-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.18s, transform 0.18s;
+      text-align: left;
+      padding: 0;
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      display: flex; flex-direction: column;
+    }
+    .tourney-card:hover { border-color: var(--clr-accent-border); transform: translateY(-2px); }
+    .tourney-card.is-active { border-color: var(--clr-accent); }
+    .tourney-img {
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+      background-size: cover; background-position: center;
+      position: relative;
+    }
+    .tourney-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(12,10,26,0) 40%, rgba(12,10,26,.85) 100%);
+    }
+    .tourney-img .tourney-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 1;
+    }
+    .tourney-img .tourney-num {
+      position: absolute; bottom: 14px; left: 16px; z-index: 1;
+      font-family: var(--font-head); font-size: 1.4rem; font-weight: 700;
+      color: var(--text-primary); letter-spacing: -0.01em;
+    }
+    .tourney-body {
+      padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .tourney-title {
+      font-family: var(--font-head); font-weight: 600; font-size: 0.98rem;
+      color: var(--text-primary); line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .tourney-meta {
+      display: flex; gap: 14px; font-family: var(--font-mono);
+      font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.04em;
+    }
+    .tourney-meta i { color: var(--clr-accent); margin-right: 4px; }
+
+    /* Bracket viewer */
+    .bracket-section {
+      padding: 56px 0 0;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .bracket-section .container {
+      max-width: 1720px;
+    }
+    .bracket-viewer {
+      margin-top: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .bracket-viewer:fullscreen {
+      width: 100vw;
+      height: 100vh;
+      border: 0;
+      border-radius: 0;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+    }
+    .bracket-viewer:fullscreen .bracket-scroll {
+      flex: 1;
+      max-height: none;
+      height: calc(100vh - 74px);
+      min-height: 0;
+    }
+    .bracket-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-wrap: wrap; gap: 12px;
+    }
+    .bracket-toolbar .bt-title { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; }
+    .bracket-toolbar .bt-sub   { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+    .bracket-tools {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .zoom-group {
+      display: inline-flex; align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 34px;
+    }
+    .zoom-btn {
+      width: 34px; height: 34px;
+      background: transparent;
+      border: 0;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .zoom-btn:hover { background: var(--clr-accent-soft); color: var(--text-primary); }
+    .zoom-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .zoom-btn + .zoom-btn { border-left: 1px solid var(--border); }
+    .zoom-level {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0 10px;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      height: 100%;
+      display: inline-flex; align-items: center;
+      min-width: 54px; justify-content: center;
+    }
+
+    .bracket-scroll {
+      overflow: auto; padding: 34px 30px;
+      height: clamp(720px, 88vh, 940px);
+      max-height: none;
+    }
+    .bracket-wrap {
+      position: relative;
+    }
+    .bracket-inner {
+      position: relative;
+      transform-origin: top left;
+      width: max-content;
+    }
+    .bracket-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    .bracket-svg path {
+      fill: none;
+      stroke: var(--border-strong);
+      stroke-width: 1.5;
+    }
+    .bracket-svg path.won {
+      stroke: var(--clr-accent);
+      stroke-width: 2;
+    }
+    .bracket-grid {
+      display: flex; align-items: stretch; gap: 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .b-round {
+      display: flex; flex-direction: column; flex: 0 0 230px;
+    }
+    .b-round-title {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--text-muted); font-weight: 500;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .b-round-title.final { color: var(--clr-gold); }
+
+    .b-matches {
+      display: flex; flex-direction: column; flex: 1;
+      justify-content: space-around;
+      position: relative;
+    }
+    .b-match {
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.15s, transform 0.15s;
+      position: relative;
+    }
+    .b-match + .b-match { margin-top: 14px; }
+    .b-match:hover { border-color: var(--clr-accent-border); transform: translateY(-1px); }
+    .b-match.final-match { border-color: rgba(245,194,91,0.45); background: linear-gradient(180deg, rgba(245,194,91,.06), var(--bg-card) 80%); }
+    .b-match-spacer {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .b-team {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; gap: 10px;
+      background: var(--bg-card);
+      position: relative;
+    }
+    .b-team + .b-team { border-top: 1px solid var(--border); }
+    .b-team-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .b-team-name {
+      font-weight: 500; font-size: 0.82rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text-secondary);
+    }
+    .b-team-seed {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      min-width: 18px;
+      text-align: right;
+    }
+    .b-team-score {
+      font-family: var(--font-mono); font-size: 0.92rem; font-weight: 600;
+      min-width: 22px; text-align: right; color: var(--text-muted);
+      padding-left: 10px;
+      border-left: 1px solid var(--border);
+    }
+    .b-team.winner {
+      background: linear-gradient(90deg, rgba(243,116,69,.07), transparent 70%);
+    }
+    .b-team.winner .b-team-name { color: var(--text-primary); font-weight: 700; }
+    .b-team.winner .b-team-score { color: var(--clr-accent); }
+    .b-team.loser .b-team-name { color: var(--text-muted); }
+    .b-team.loser .b-team-score { color: var(--text-muted); }
+    .b-team.tbd .b-team-name { color: var(--text-muted); font-style: italic; }
+    .b-team.bye { opacity: 0.5; }
+    .b-team.bye .b-team-name { font-style: italic; }
+
+    .b-match-label {
+      font-family: var(--font-mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 6px 12px 4px;
+      background: rgba(255,255,255,.02);
+      border-bottom: 1px solid var(--border);
+      display: block;
+    }
+
+    .placeholder-state {
+      text-align: center; padding: 64px 24px;
+      color: var(--text-muted);
+    }
+    .placeholder-state i {
+      font-size: 2rem; color: var(--clr-accent); opacity: 0.4;
+      margin-bottom: 14px; display: block;
+    }
+
+    @media (max-width: 720px) {
+      .bracket-toolbar { flex-direction: column; align-items: flex-start; }
+      .b-round { flex: 0 0 200px; }
+      .bracket-grid { gap: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
+      SLICE <span>LEAGUE</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="bracket.html" class="active">Bracket</a>
+      <a href="players.html">Players</a>
+      <a href="teams.html">Teams</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="keytrade.html">Keytrade</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="bracket.html" class="active">Bracket</a>
+  <a href="players.html">Players</a>
+  <a href="teams.html">Teams</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="keytrade.html">Keytrade</a>
+</div>
+
+<section class="bracket-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Choose a tournament</div>
+      <h2 class="section-title" style="margin-bottom:24px">Slice League <span>Qualifiers</span></h2>
+    </div>
+
+    <div class="tourney-grid reveal reveal-delay-1" id="tourneyGrid">
+      <div class="data-loading" style="grid-column:1/-1"><i class="fas fa-spinner fa-spin"></i>Loading qualifiers…</div>
+    </div>
+
+    <div id="bracketViewer"></div>
+  </div>
+</section>
+
+<div class="sponsor-strip" style="margin-top: 40px;">
+  <div class="container">
+    <div class="sponsor-strip-inner">
+      <span class="sponsor-label-text">Official Sponsors</span>
+      <div style="width: 1px; height: 24px; background: var(--border);"></div>
+      <a href="keytrade.html" class="keytrade-badge">
+        <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
+        <div class="keytrade-badge-text">
+          <span class="keytrade-badge-name">Keytrade Bank</span>
+          <span class="keytrade-badge-role">Title Sponsor · Season 2</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><div class="logo-icon"><img src="assets/logo.png" alt=""></div>SLICE <span style="color:var(--clr-accent)">LEAGUE</span></div>
+        <p class="footer-brand-desc">Belgium's premier Brawl Stars esports tournament.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="keytrade.html">Keytrade Bank</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Slice League · All rights reserved</span>
+      <span class="footer-powered">Organized by <span>Nikounaki</span> · Belgium</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+const DEFAULT_LOGO = 'assets/default.png';
+
+function teamLogoHTML(team, size) {
+  const src = (team && team.logo_url) ? team.logo_url : DEFAULT_LOGO;
+  return `<div class="team-logo ${size||'sm'}"><img src="${src}" alt="" onerror="this.src='${DEFAULT_LOGO}'"></div>`;
+}
+
+function statusBadge(status) {
+  const s = String(status || '').toLowerCase();
+  if (['done','completed','finished','closed'].includes(s)) return '<span class="tag tag-green tourney-badge">Complete</span>';
+  if (['in-progress','live','active','started'].includes(s)) return '<span class="tag tag-orange tourney-badge">Live</span>';
+  if (['ready','upcoming'].includes(s)) return '<span class="tag tag-cyan tourney-badge">Upcoming</span>';
+  return `<span class="tag tag-purple tourney-badge">${status || 'TBD'}</span>`;
+}
+
+function fmtDate(iso) {
+  if (!iso) return 'TBD';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+}
+
+let allQualifiers = [];
+let selectedId = null;
+
+function observeReveals(root) {
+  if (!window.revealObserver || !root) return;
+  root.querySelectorAll('.reveal').forEach(el => window.revealObserver.observe(el));
+}
+
+function renderTourneyGrid() {
+  const el = document.getElementById('tourneyGrid');
+  if (!allQualifiers.length) {
+    el.innerHTML = '<div class="data-loading" style="grid-column:1/-1">No qualifiers available.</div>';
+    return;
+  }
+  el.innerHTML = allQualifiers.map(q => {
+    const img = q.image ? `style="background-image:url('${q.image}')"` : '';
+    const active = q.id === selectedId ? ' is-active' : '';
+    return `
+      <button type="button" class="tourney-card reveal${active}" data-id="${q.id}">
+        <div class="tourney-img" ${img}>
+          ${statusBadge(q.bracket?.status || q.status)}
+          <div class="tourney-num">Qualifier #${q.number}</div>
+        </div>
+        <div class="tourney-body">
+          <div class="tourney-title">${q.title || `Slice League Qualifier #${q.number}`}</div>
+          <div class="tourney-meta">
+            <span><i class="fas fa-calendar"></i>${fmtDate(q.startAt)}</span>
+            <span><i class="fas fa-users"></i>${q.entrants || q.spots || 0} teams</span>
+          </div>
+        </div>
+      </button>`;
+  }).join('');
+
+  observeReveals(el);
+  el.querySelectorAll('.tourney-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = Number(btn.dataset.id);
+      selectedId = (selectedId === id) ? null : id;
+      renderTourneyGrid();
+      renderBracket();
+    });
+  });
+}
+
+function sideClass(match, side) {
+  const team = match[side] || {};
+  if ((team.name || '').toUpperCase() === 'BYE') return ' bye';
+  if (!match.winnerSide) {
+    return (team.name && team.name !== 'TBD') ? '' : ' tbd';
+  }
+  return match.winnerSide === (side === 'teamA' ? 'a' : 'b') ? ' winner' : ' loser';
+}
+
+function isPlayableMatch(match) {
+  const a = Number(match?.teamA?.entrant_id || 0);
+  const b = Number(match?.teamB?.entrant_id || 0);
+  return a > 1 && b > 1;
+}
+
+function displayRoundsForBracket(rounds) {
+  return (rounds || [])
+    .map(round => ({
+      ...round,
+      matches: round.matches || [],
+      playableCount: (round.matches || []).filter(isPlayableMatch).length
+    }))
+    .filter(round => {
+      if (!round.playableCount) return false;
+      if (round.playableCount === round.matches.length) return true;
+      return round.playableCount / Math.max(1, round.matches.length) >= 0.35;
+    });
+}
+
+function renderSide(match, side) {
+  const team = match[side] || {};
+  const score = team.score ?? '·';
+  const seedHtml = team.seed ? `<span class="b-team-seed">#${team.seed}</span>` : '';
+  return `
+    <div class="b-team${sideClass(match, side)}" data-side="${side}">
+      <div class="b-team-left">
+        ${teamLogoHTML(team, 'sm')}
+        <span class="b-team-name">${team.name || 'TBD'}</span>
+      </div>
+      ${seedHtml}
+      <span class="b-team-score">${score}</span>
+    </div>`;
+}
+
+let bracketZoom = 1;
+const ZOOM_MIN = 0.5, ZOOM_MAX = 1.6, ZOOM_STEP = 0.1;
+
+function applyZoom() {
+  const wrap = document.querySelector('.bracket-wrap');
+  const inner = document.querySelector('.bracket-inner');
+  if (!wrap || !inner) return;
+  // Temporarily clear transform so we can read the natural size.
+  inner.style.transform = '';
+  const natW = inner.offsetWidth;
+  const natH = inner.offsetHeight;
+  inner.style.transform = `scale(${bracketZoom})`;
+  wrap.style.width = (natW * bracketZoom) + 'px';
+  wrap.style.height = (natH * bracketZoom) + 'px';
+  const lvl = document.getElementById('zoomLevel');
+  if (lvl) lvl.textContent = Math.round(bracketZoom * 100) + '%';
+  requestAnimationFrame(drawConnectors);
+}
+
+function setupZoomControls() {
+  const inBtn = document.getElementById('zoomIn');
+  const outBtn = document.getElementById('zoomOut');
+  const resetBtn = document.getElementById('zoomReset');
+  const fullBtn = document.getElementById('zoomFullscreen');
+  if (!inBtn) return;
+  inBtn.onclick = () => { bracketZoom = Math.min(ZOOM_MAX, +(bracketZoom + ZOOM_STEP).toFixed(2)); applyZoom(); };
+  outBtn.onclick = () => { bracketZoom = Math.max(ZOOM_MIN, +(bracketZoom - ZOOM_STEP).toFixed(2)); applyZoom(); };
+  resetBtn.onclick = () => { bracketZoom = 1; applyZoom(); };
+  if (fullBtn) {
+    fullBtn.onclick = async () => {
+      const viewer = document.querySelector('.bracket-viewer');
+      if (!viewer) return;
+      try {
+        if (document.fullscreenElement === viewer) {
+          await document.exitFullscreen();
+        } else {
+          await viewer.requestFullscreen();
+        }
+      } catch {}
+      requestAnimationFrame(applyZoom);
+    };
+  }
+}
+
+function drawConnectors() {
+  const svg = document.querySelector('.bracket-svg');
+  const inner = document.querySelector('.bracket-inner');
+  if (!svg || !inner) return;
+
+  const rounds = Array.from(inner.querySelectorAll('.b-round'));
+  if (rounds.length < 2) { svg.innerHTML = ''; return; }
+
+  svg.setAttribute('width', inner.scrollWidth);
+  svg.setAttribute('height', inner.scrollHeight);
+  svg.setAttribute('viewBox', `0 0 ${inner.scrollWidth} ${inner.scrollHeight}`);
+
+  const paths = [];
+
+  function pageOffset(el) {
+    let x = 0;
+    let y = 0;
+    let node = el;
+    while (node) {
+      x += node.offsetLeft || 0;
+      y += node.offsetTop || 0;
+      node = node.offsetParent;
+    }
+    return { x, y };
+  }
+
+  const innerOffset = pageOffset(inner);
+
+  function localBox(el) {
+    const offset = pageOffset(el);
+    return {
+      x: offset.x - innerOffset.x,
+      y: offset.y - innerOffset.y,
+      width: el.offsetWidth,
+      height: el.offsetHeight
+    };
+  }
+
+  for (let r = 0; r < rounds.length - 1; r++) {
+    const currMatches = Array.from(rounds[r].querySelectorAll('.b-match'));
+    const nextMatches = Array.from(rounds[r + 1].querySelectorAll('.b-match'));
+
+    for (const source of currMatches) {
+      const teamKey = source.dataset.outcomeTeam || '';
+      if (!teamKey) continue;
+
+      let target = null;
+      let targetSide = '';
+      for (const candidate of nextMatches) {
+        if (candidate.dataset.teamAKey === teamKey) {
+          target = candidate;
+          targetSide = 'teamA';
+          break;
+        }
+        if (candidate.dataset.teamBKey === teamKey) {
+          target = candidate;
+          targetSide = 'teamB';
+          break;
+        }
+      }
+      if (!target) continue;
+
+      const targetRow = target.querySelector(`.b-team[data-side="${targetSide}"]`) || target;
+      const sourceBox = localBox(source);
+      const targetBox = localBox(targetRow);
+      const ax = sourceBox.x + sourceBox.width;
+      const ay = sourceBox.y + sourceBox.height / 2;
+      const cx = targetBox.x;
+      const cy = targetBox.y + targetBox.height / 2;
+      const midX = ax + Math.max(32, (cx - ax) / 2);
+
+      paths.push(`<path d="M ${ax} ${ay} H ${midX} V ${cy} H ${cx}" class="won" />`);
+    }
+  }
+
+  svg.innerHTML = paths.join('');
+}
+
+function renderBracket() {
+  const root = document.getElementById('bracketViewer');
+  if (!selectedId) { root.innerHTML = ''; return; }
+  const q = allQualifiers.find(x => x.id === selectedId);
+  if (!q) { root.innerHTML = ''; return; }
+
+  const bracket = q.bracket || {};
+  const rounds = displayRoundsForBracket(bracket.rounds || []);
+
+  let inner;
+  if (!rounds.length) {
+    inner = `
+      <div class="placeholder-state">
+        <i class="fas fa-hourglass-half"></i>
+        Bracket not published yet for this qualifier.
+      </div>`;
+  } else {
+    inner = `
+      <div class="bracket-scroll">
+        <div class="bracket-wrap">
+          <div class="bracket-inner">
+          <svg class="bracket-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+          <div class="bracket-grid">
+            ${rounds.map(round => {
+              const isFinal = round.label === 'Final' || round.label === 'Grand Final';
+              return `
+                <div class="b-round">
+                  <div class="b-round-title${isFinal ? ' final' : ''}">${round.label}</div>
+                  <div class="b-matches">
+                    ${(round.matches || []).map(match => {
+                      if (!isPlayableMatch(match)) {
+                        return `
+                          <div class="b-match b-match-spacer" aria-hidden="true">
+                            ${match.status ? `<div class="b-match-label">${match.status}${match.hasStats ? ' - stats' : ''}</div>` : ''}
+                            ${renderSide(match, 'teamA')}
+                            ${renderSide(match, 'teamB')}
+                          </div>
+                        `;
+                      }
+                      const winKey = match.winnerSide === 'a'
+                        ? (match.teamA?.team_key || '')
+                        : match.winnerSide === 'b'
+                          ? (match.teamB?.team_key || '')
+                          : '';
+                      return `
+                        <div class="b-match${isFinal ? ' final-match' : ''}"
+                             data-winner="${match.winnerSide || ''}"
+                             data-outcome-team="${winKey}"
+                             data-team-a-key="${match.teamA?.team_key || ''}"
+                             data-team-b-key="${match.teamB?.team_key || ''}">
+                          ${match.status ? `<div class="b-match-label">${match.status}${match.hasStats ? ' · stats' : ''}</div>` : ''}
+                          ${renderSide(match, 'teamA')}
+                          ${renderSide(match, 'teamB')}
+                        </div>
+                      `;
+                    }).join('') || '<div class="placeholder-state" style="padding:24px"><i class="fas fa-circle-notch"></i>No matches yet</div>'}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  root.innerHTML = `
+    <div class="bracket-viewer reveal reveal-delay-2">
+      <div class="bracket-toolbar">
+        <div>
+          <div class="bt-title">Qualifier #${q.number} bracket</div>
+          <div class="bt-sub">${q.title || ''} · ${q.entrants || 0} teams · ${bracket.kind || 'single-elim'}</div>
+        </div>
+        <div class="bracket-tools">
+          <div class="zoom-group">
+            <button type="button" class="zoom-btn" id="zoomOut" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
+            <span class="zoom-level" id="zoomLevel">100%</span>
+            <button type="button" class="zoom-btn" id="zoomIn" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
+            <button type="button" class="zoom-btn" id="zoomReset" aria-label="Reset zoom"><i class="fas fa-rotate-left"></i></button>
+            <button type="button" class="zoom-btn" id="zoomFullscreen" aria-label="Fullscreen"><i class="fas fa-expand"></i></button>
+          </div>
+          <a href="https://matcherino.com/tournaments/${q.id}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+            <i class="fas fa-external-link-alt"></i> Matcherino
+          </a>
+        </div>
+      </div>
+      ${inner}
+    </div>`;
+
+  bracketZoom = 1;
+  observeReveals(root);
+  setupZoomControls();
+  requestAnimationFrame(() => {
+    applyZoom();
+    drawConnectors();
+  });
+
+  root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+window.addEventListener('resize', () => requestAnimationFrame(drawConnectors));
+document.addEventListener('fullscreenchange', () => {
+  const icon = document.querySelector('#zoomFullscreen i');
+  if (icon) {
+    icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+  }
+  requestAnimationFrame(applyZoom);
+});
+
+async function loadBrackets() {
+  try {
+    const res = await fetch('/api/bracket');
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    allQualifiers = (data.qualifiers || []).sort((a, b) => (a.number || 0) - (b.number || 0));
+    renderTourneyGrid();
+  } catch {
+    document.getElementById('tourneyGrid').innerHTML = '<div class="data-loading" style="grid-column:1/-1">Bracket data unavailable. Try again later.</div>';
+  }
+}
+
+loadBrackets();
+</script>
+</body>
+</html>

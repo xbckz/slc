@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teams · Slice League</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .teams-page-title { margin-bottom: 34px; }
+    .group-label {
+      display: flex; align-items: center; gap: 14px;
+      margin: 40px 0 18px;
+    }
+    .group-label .gl-title {
+      font-family: var(--font-head); font-size: 1.4rem; font-weight: 600;
+      letter-spacing: -.01em; color: var(--text-primary);
+    }
+    .group-label .gl-count {
+      font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .group-label .gl-rule {
+      flex: 1; height: 1px; background: var(--border);
+    }
+
+    body.teams-page .team-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.025), transparent 62%),
+        var(--bg-card);
+      border-color: var(--border);
+      transition: border-color .18s, background .18s, transform .18s;
+    }
+    body.teams-page .team-card:hover {
+      border-color: var(--clr-accent-border);
+      background:
+        linear-gradient(180deg, rgba(245,194,91,.045), transparent 64%),
+        var(--bg-card-hover);
+      transform: translateY(-3px);
+    }
+    body.teams-page .team-record {
+      background: rgba(255,255,255,.018);
+      border-color: var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    body.teams-page .team-record-item + .team-record-item {
+      border-left: 1px solid var(--border);
+    }
+    body.teams-page .team-roster {
+      gap: 8px;
+    }
+    body.teams-page .roster-player {
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.055);
+      border-radius: 8px;
+      background: rgba(255,255,255,.018);
+    }
+    .team-card.is-qualified { border-color: var(--clr-lime-border); background: linear-gradient(180deg, rgba(163,230,53,.04), var(--bg-card) 50%); }
+    .team-card.is-qualified:hover { border-color: var(--clr-lime-border); }
+    .team-meta-line {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .team-meta-line strong {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="teams-page">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
+      SLICE <span>LEAGUE</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="bracket.html">Bracket</a>
+      <a href="players.html">Players</a>
+      <a href="teams.html" class="active">Teams</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="keytrade.html">Keytrade</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="bracket.html">Bracket</a>
+  <a href="players.html">Players</a>
+  <a href="teams.html" class="active">Teams</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="keytrade.html">Keytrade</a>
+</div>
+
+<section style="padding-top: 56px;">
+  <div class="container">
+    <div class="teams-page-title reveal">
+      <div class="section-label">Season 2</div>
+      <h2 class="section-title">League <span>Teams</span></h2>
+    </div>
+    <div id="teamsBody">
+    <div class="data-loading"><i class="fas fa-spinner fa-spin"></i>Loading teams from Matcherino…</div>
+  </div>
+    </div>
+</section>
+
+<div class="sponsor-strip">
+  <div class="container">
+    <div class="sponsor-strip-inner">
+      <span class="sponsor-label-text">Official Sponsors</span>
+      <div style="width: 1px; height: 24px; background: var(--border);"></div>
+      <a href="keytrade.html" class="keytrade-badge">
+        <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
+        <div class="keytrade-badge-text">
+          <span class="keytrade-badge-name">Keytrade Bank</span>
+          <span class="keytrade-badge-role">Title Sponsor · Season 2</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><div class="logo-icon"><img src="assets/logo.png" alt=""></div>SLICE <span style="color:var(--clr-accent)">LEAGUE</span></div>
+        <p class="footer-brand-desc">Belgium's premier Brawl Stars esports tournament.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="keytrade.html">Keytrade Bank</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Slice League · All rights reserved</span>
+      <span class="footer-powered">Organized by <span>Nikounaki</span> · Belgium</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+const DEFAULT_LOGO = 'assets/default.png';
+const DEFAULT_AVATAR = 'assets/player.png';
+const MAX_ROSTER = 3;
+const TOTAL_QUALIFIERS = 4;
+const POINTS_SLOTS = 4;
+
+function escapeHTML(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function teamLogoHTML(team, size) {
+  const src = (team && team.logo_url) ? team.logo_url : DEFAULT_LOGO;
+  return `<div class="team-logo ${size||'lg'}"><img src="${escapeHTML(src)}" alt="" onerror="this.src='${DEFAULT_LOGO}'"></div>`;
+}
+
+function playerAvatarImg(p) {
+  const src = (p && p.avatar_url) ? p.avatar_url : DEFAULT_AVATAR;
+  return `<img src="${escapeHTML(src)}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">`;
+}
+
+function fmtTeamNum(n) { return Number(n || 0).toLocaleString(); }
+function teamKd(value) {
+  const n = Number(value || 0);
+  return Number.isFinite(n) ? n.toFixed(2) : '0.00';
+}
+
+/* Qualifier-points rule from the format:
+   1st = direct qualify (no points)
+   2nd = 10 pts, 3rd-4th = 5 pts, 5th-8th = 2 pts */
+function qualifierPoints(team) {
+  let pts = 0;
+  for (const p of (team.placements || [])) {
+    const pl = Number(p.placement);
+    if (pl === 2) pts += 10;
+    else if (pl === 3 || pl === 4) pts += 5;
+    else if (pl >= 5 && pl <= 8) pts += 2;
+  }
+  return pts;
+}
+
+function hasQualifierWin(team) {
+  return (team.placements || []).some(p => Number(p.placement) === 1);
+}
+
+function qualifierWins(team) {
+  return (team.placements || [])
+    .filter(p => Number(p.placement) === 1 && Number(p.qualifier) > 0)
+    .map(p => Number(p.qualifier))
+    .sort((a, b) => a - b);
+}
+
+function teamMetaText(team, rank, qualified, reason) {
+  const qpts = qualifierPoints(team);
+  if (qualified && reason === 'winner') {
+    const wins = qualifierWins(team);
+    return wins.length ? `Won qualifier ${wins.join(',')}` : 'Won qualifier';
+  }
+  return `${rank ? `#${rank} · ` : ''}${qpts} pts`;
+}
+
+/* Best (lowest) placement = highest finish */
+function bestPlacement(team) {
+  const ps = (team.placements || []).map(p => Number(p.placement)).filter(n => n > 0);
+  return ps.length ? Math.min(...ps) : 99;
+}
+
+function gamesPlayed(team) {
+  const matches = (Number(team.wins) || 0) + (Number(team.losses) || 0);
+  const games = (Number(team.game_wins) || 0) + (Number(team.game_losses) || 0);
+  return Math.max(matches, games);
+}
+
+function rosterRow(player) {
+  return `
+    <div class="roster-player">
+      <div class="roster-avatar">${playerAvatarImg(player)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="roster-ign">${escapeHTML(player.ign)}</div>
+        <div style="font-size:.7rem;color:var(--text-muted)">${fmtTeamNum(player.total_damage)} DMG · ${teamKd(player.kd)} K/D</div>
+      </div>
+    </div>`;
+}
+
+function teamCard(team, rank, qualified, reason) {
+  return `
+    <div class="team-card reveal ${qualified ? 'is-qualified' : ''}">
+      <div class="team-card-header">
+        ${teamLogoHTML(team, 'lg')}
+        <div style="min-width:0;flex:1">
+          <div class="team-card-name">${escapeHTML(team.name)}</div>
+          <div class="team-meta-line">${escapeHTML(teamMetaText(team, rank, qualified, reason))}</div>
+        </div>
+      </div>
+      <div class="team-record">
+        <div class="team-record-item"><div class="team-record-val" style="color:var(--clr-lime)">${team.wins || 0}</div><div class="team-record-key">W</div></div>
+        <div class="team-record-item"><div class="team-record-val" style="color:var(--clr-purple-light)">${team.losses || 0}</div><div class="team-record-key">L</div></div>
+        <div class="team-record-item"><div class="team-record-val">${fmtTeamNum(team.total_damage)}</div><div class="team-record-key">DMG</div></div>
+        <div class="team-record-item"><div class="team-record-val">${teamKd(team.kd)}</div><div class="team-record-key">K/D</div></div>
+      </div>
+      <div class="team-roster">
+        ${(team.players || []).slice(0, MAX_ROSTER).map(rosterRow).join('') || '<div style="color:var(--text-muted);font-size:.85rem;">No player stat reports yet.</div>'}
+      </div>
+    </div>`;
+}
+
+function ordinal(n) {
+  const s = ['th','st','nd','rd'];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function observeReveals(root) {
+  if (!window.revealObserver || !root) return;
+  root.querySelectorAll('.reveal').forEach(el => window.revealObserver.observe(el));
+}
+
+function isQualifierFinished(q) {
+  const s = String(q.status || '').toLowerCase();
+  return s === 'closed' || s === 'finished' || s === 'completed';
+}
+
+function renderTeams(teams, qualifiers) {
+  const root = document.getElementById('teamsBody');
+  if (!root) return;
+
+  /* Filter out teams that haven't played any games */
+  const active = (teams || []).filter(t => gamesPlayed(t) > 0);
+
+  if (!active.length) {
+    root.innerHTML = '<div class="data-loading">No teams with completed games yet.</div>';
+    return;
+  }
+
+  const finishedCount = (qualifiers || []).filter(isQualifierFinished).length;
+  const allFinished = finishedCount >= TOTAL_QUALIFIERS;
+
+  /* Direct qualifiers = any team that won at least one qualifier */
+  const directQualified = active.filter(hasQualifierWin);
+  const directIds = new Set(directQualified.map(t => t.id));
+
+  /* Points race: every team that hasn't won a qualifier, ranked by qualifier points */
+  const pointsRace = active
+    .filter(t => !directIds.has(t.id))
+    .map(t => ({ team: t, pts: qualifierPoints(t) }))
+    .sort((a, b) => b.pts - a.pts || (b.team.total_damage || 0) - (a.team.total_damage || 0));
+
+  /* Lock in the top 4 points teams only once all 4 qualifiers are done.
+     While qualifiers are still running the rest stay in "not yet qualified". */
+  const pointsQualified = allFinished ? pointsRace.slice(0, POINTS_SLOTS).map(x => x.team) : [];
+  const pointsIds = new Set(pointsQualified.map(t => t.id));
+
+  const notQualified = active.filter(t => !directIds.has(t.id) && !pointsIds.has(t.id));
+
+  /* Sort qualified teams: direct winners first (by best placement, then damage), then points */
+  directQualified.sort((a, b) => bestPlacement(a) - bestPlacement(b) || (b.total_damage || 0) - (a.total_damage || 0));
+
+  /* Sort the "not qualified" leaderboard by points, then damage */
+  notQualified.sort((a, b) => qualifierPoints(b) - qualifierPoints(a) || (b.total_damage || 0) - (a.total_damage || 0));
+
+  let html = '';
+
+  if (directQualified.length) {
+    html += `
+      <div class="group-label reveal">
+        <span class="gl-title">Qualified · Won a qualifier</span>
+        <span class="gl-count">${directQualified.length} / ${TOTAL_QUALIFIERS}</span>
+        <span class="gl-rule"></span>
+      </div>
+      <div class="grid-3">
+        ${directQualified.map((t, i) => teamCard(t, null, true, 'winner')).join('')}
+      </div>`;
+  }
+
+  if (allFinished && pointsQualified.length) {
+    html += `
+      <div class="group-label reveal">
+        <span class="gl-title">Qualified · Via points</span>
+        <span class="gl-count">${pointsQualified.length} / ${POINTS_SLOTS}</span>
+        <span class="gl-rule"></span>
+      </div>
+      <div class="grid-3">
+        ${pointsQualified.map((t, i) => teamCard(t, i + 1, true, 'points')).join('')}
+      </div>`;
+  }
+
+  if (notQualified.length) {
+    const heading = allFinished ? 'Did not qualify' : 'Points race · Top 4 qualify after Q4';
+    html += `
+      <div class="group-label reveal">
+        <span class="gl-title">${heading}</span>
+        <span class="gl-count">${notQualified.length} team${notQualified.length === 1 ? '' : 's'}</span>
+        <span class="gl-rule"></span>
+      </div>
+      <div class="grid-3">
+        ${notQualified.map((t, i) => teamCard(t, i + 1, false)).join('')}
+      </div>`;
+  }
+
+  root.innerHTML = html;
+  observeReveals(root);
+}
+
+async function loadTeams() {
+  const root = document.getElementById('teamsBody');
+  try {
+    const [tRes, qRes] = await Promise.all([
+      fetch('/api/teams'),
+      fetch('/api/qualifiers').catch(() => null),
+    ]);
+    if (!tRes.ok) throw new Error(tRes.status);
+    const teams = await tRes.json();
+    const qualifiers = qRes && qRes.ok ? await qRes.json() : [];
+    renderTeams(Array.isArray(teams) ? teams : [], Array.isArray(qualifiers) ? qualifiers : []);
+  } catch {
+    root.innerHTML = '<div class="data-loading">Team data unavailable. Try again later.</div>';
+  }
+}
+
+loadTeams();
+</script>
+</body>
+</html>

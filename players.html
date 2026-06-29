@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Players · Slice League</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
+      SLICE <span>LEAGUE</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="bracket.html">Bracket</a>
+      <a href="players.html" class="active">Players</a>
+      <a href="teams.html">Teams</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="keytrade.html">Keytrade</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="bracket.html">Bracket</a>
+  <a href="players.html" class="active">Players</a>
+  <a href="teams.html">Teams</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="keytrade.html">Keytrade</a>
+</div>
+
+<section style="padding-top: 56px;">
+  <div class="container">
+
+    <div class="reveal" id="playerPodium" style="margin-bottom: 56px;">
+      <div class="section-label">Top Performers</div>
+      <h2 class="section-title" style="margin-bottom:24px">Damage <span>Podium</span></h2>
+      <div class="podium" id="podiumWrap">
+        <div class="data-loading" style="width:100%"><i class="fas fa-spinner fa-spin"></i>Loading podium…</div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="flex-between mb-24">
+        <div>
+          <div class="section-label">Season 2</div>
+          <h2 class="section-title">Damage <span>Leaderboard</span></h2>
+        </div>
+        <div class="filter-bar" style="margin-bottom:0">
+          <button class="filter-btn active" data-sort="damage">Total Damage</button>
+          <button class="filter-btn" data-sort="kd">K/D Ratio</button>
+          <button class="filter-btn" data-sort="star">Star Player</button>
+        </div>
+      </div>
+
+      <div class="card collapsible" data-collapsed="true" id="leaderboardCollapsible" style="padding: 0; overflow: hidden;">
+        <table class="lb-table" id="lbTable">
+          <thead>
+            <tr>
+              <th style="width:50px">#</th>
+              <th>Player</th>
+              <th class="right">Total DMG</th>
+              <th class="right">K/D</th>
+              <th class="right">Star %</th>
+            </tr>
+          </thead>
+          <tbody id="lbBody">
+            <tr><td colspan="4" class="data-loading"><i class="fas fa-spinner fa-spin"></i>Loading players…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="collapsible-toggle-wrap">
+        <button type="button" class="collapsible-toggle" data-target="leaderboardCollapsible">
+          <span class="ctxt">Show full leaderboard</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="sponsor-strip">
+  <div class="container">
+    <div class="sponsor-strip-inner">
+      <span class="sponsor-label-text">Official Sponsors</span>
+      <div style="width: 1px; height: 24px; background: var(--border);"></div>
+      <a href="keytrade.html" class="keytrade-badge">
+        <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
+        <div class="keytrade-badge-text">
+          <span class="keytrade-badge-name">Keytrade Bank</span>
+          <span class="keytrade-badge-role">Title Sponsor · Season 2</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><div class="logo-icon"><img src="assets/logo.png" alt=""></div>SLICE <span style="color:var(--clr-accent)">LEAGUE</span></div>
+        <p class="footer-brand-desc">Belgium's premier Brawl Stars esports tournament.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="keytrade.html">Keytrade Bank</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Slice League · All rights reserved</span>
+      <span class="footer-powered">Organized by <span>Nikounaki</span> · Belgium</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+let livePlayers = [];
+let activeSort = 'damage';
+const PREVIEW_COUNT = 8;
+const DEFAULT_AVATAR = 'assets/player.png';
+
+function fmtNumber(n) { return Number(n || 0).toLocaleString(); }
+function playerKd(p) {
+  const v = Number(p.kd || 0);
+  return Number.isFinite(v) ? v.toFixed(2) : '0.00';
+}
+function playerAvatarImg(p) {
+  const src = (p && p.avatar_url) ? p.avatar_url : DEFAULT_AVATAR;
+  return `<img src="${src}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">`;
+}
+
+function sortPlayers(arr, key) {
+  return [...arr].sort((a, b) => {
+    if (key === 'kd') return (b.kd || 0) - (a.kd || 0);
+    if (key === 'star') {
+      const aRate = a.star_player_rate != null ? a.star_player_rate
+        : (a.games ? ((a.star_player || a.mvps || 0) / a.games) * 100 : 0);
+      const bRate = b.star_player_rate != null ? b.star_player_rate
+        : (b.games ? ((b.star_player || b.mvps || 0) / b.games) * 100 : 0);
+      return bRate - aRate;
+    }
+    return (b.total_damage || b.damage || 0) - (a.total_damage || a.damage || 0);
+  });
+}
+
+function renderPodium(data) {
+  const wrap = document.getElementById('podiumWrap');
+  if (!wrap) return;
+  const top = data.slice(0, 3);
+  if (!top.length) {
+    wrap.innerHTML = '<div class="data-loading" style="width:100%">No player data yet.</div>';
+    return;
+  }
+  wrap.innerHTML = top.map((p, i) => `
+    <div class="podium-card rank-${i + 1}">
+      <div class="podium-medal">#${i + 1}</div>
+      <div class="podium-avatar">${playerAvatarImg(p)}</div>
+      <div class="podium-ign">${p.ign || p.tag}</div>
+      <div class="podium-team">${p.team_abbr || p.team || ''}</div>
+      <div class="podium-elims">${fmtNumber(p.total_damage || p.damage)}</div>
+      <div class="podium-elim-label">Total Damage</div>
+      <div class="podium-star"><i class="fas fa-star" style="color:var(--clr-gold);margin-right:6px"></i>${starRate(p)} Star Player</div>
+    </div>
+  `).join('');
+}
+
+function renderLeaderboard(data) {
+  const tbody = document.getElementById('lbBody');
+  if (!tbody) return;
+  tbody.innerHTML = data.map((p, i) => `
+    <tr${i >= PREVIEW_COUNT ? ' class="collapsible-extra"' : ''}>
+      <td class="lb-rank"><span style="color:${i===0?'#f0c040':i===1?'#94a3b8':i===2?'#a16207':'var(--text-muted)'};font-family:var(--font-mono);font-size:.85rem;font-weight:500">#${i + 1}</span></td>
+      <td>
+        <div class="lb-player">
+          <div class="lb-avatar">${playerAvatarImg(p)}</div>
+          <div>
+            <div class="lb-ign">${p.ign || p.tag}</div>
+            <div class="lb-team">${p.team || p.team_abbr || ''}</div>
+          </div>
+        </div>
+      </td>
+      <td class="right"><span class="lb-kills">${fmtNumber(p.total_damage || p.damage)}</span></td>
+      <td class="right"><span class="lb-kd">${playerKd(p)}</span></td>
+      <td class="right"><span class="lb-star">${starRate(p)}</span></td>
+    </tr>
+  `).join('');
+}
+
+function starRate(p) {
+  const games = Number(p.games || 0);
+  if (!games) return '·';
+  const rate = Number(p.star_player_rate != null ? p.star_player_rate : (Number(p.star_player || p.mvps || 0) / games) * 100);
+  return `${rate.toFixed(0)}%`;
+}
+
+function renderAll() {
+  const sorted = sortPlayers(livePlayers, activeSort);
+  renderPodium(sorted);
+  renderLeaderboard(sorted);
+}
+
+function bindCollapsibles() {
+  document.querySelectorAll('.collapsible-toggle').forEach(btn => {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      const collapsed = target.getAttribute('data-collapsed') === 'true';
+      target.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+      const label = btn.querySelector('.ctxt');
+      if (label) {
+        if (!btn.dataset.closedLabel) btn.dataset.closedLabel = label.textContent;
+        label.textContent = collapsed ? 'Show less' : btn.dataset.closedLabel;
+      }
+    });
+  });
+}
+
+function bindSorters() {
+  document.querySelectorAll('.filter-bar .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSort = btn.dataset.sort;
+      renderAll();
+    });
+  });
+}
+
+async function loadPlayers() {
+  try {
+    const res = await fetch('/api/players');
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) throw new Error('empty');
+    livePlayers = data;
+    renderAll();
+  } catch {
+    const tbody = document.getElementById('lbBody');
+    if (tbody) tbody.innerHTML = '<tr><td colspan="4" class="data-loading">Player data unavailable. Try again later.</td></tr>';
+    const wrap = document.getElementById('podiumWrap');
+    if (wrap) wrap.innerHTML = '<div class="data-loading" style="width:100%">Player data unavailable. Try again later.</div>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  bindSorters();
+  bindCollapsibles();
+  loadPlayers();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slice League · Belgian Brawl Stars Tournament</title>
+  <meta name="description" content="The Slice League is Belgium's premier Brawl Stars esports tournament. Season 2 playoffs are here. Follow the bracket, stats, and live streams.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="has-notif">
+
+<!-- NOTIFICATION BAR -->
+<div class="notif-bar" id="notifBar">
+  Qualifier <strong>#3</strong> begins <strong>June 27 · 18:00 CET</strong> · 128 spots, cast by YF7.
+  <a href="https://matcherino.com/tournaments/210822" target="_blank" rel="noopener">Register on Matcherino →</a>
+  <button class="notif-dismiss" aria-label="Dismiss notification">×</button>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
+      SLICE <span>LEAGUE</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="bracket.html">Bracket</a>
+      <a href="players.html">Players</a>
+      <a href="teams.html">Teams</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="keytrade.html">Keytrade</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-socials">
+        <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+      </div>
+      <div class="live-badge" id="liveBadge" style="display:none">
+        <span class="live-dot"></span> LIVE
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html" class="active">Home</a>
+  <a href="bracket.html">Bracket</a>
+  <a href="players.html">Players</a>
+  <a href="teams.html">Teams</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="keytrade.html">Keytrade</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-grid"></div>
+  <img src="assets/logo.png" alt="" class="hero-brand-logo" aria-hidden="true">
+  <img src="assets/star.png" alt="" class="hero-star hero-star-a" aria-hidden="true">
+  <img src="assets/star.png" alt="" class="hero-star hero-star-b" aria-hidden="true">
+  <img src="assets/star.png" alt="" class="hero-star hero-star-c" aria-hidden="true">
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Slice<br><span>League.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Four open qualifiers. Ten teams. One €1,000 Grand Final on
+      <strong>September 19</strong>. Belgium's premier Brawl Stars league,
+      powered by <strong>Keytrade Bank</strong>.
+    </p>
+    <div class="hero-actions">
+      <a href="#qualifiers" class="btn btn-primary">
+        <i class="fas fa-trophy"></i> View Qualifiers
+      </a>
+      <a href="schedule.html" class="btn btn-secondary">
+        <i class="fas fa-calendar"></i> Watch Live
+      </a>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hero-stat">
+        <div class="hero-stat-num red" data-count="4">4</div>
+        <div class="hero-stat-label">Qualifiers</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="10">10</div>
+        <div class="hero-stat-label">League Teams</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="heroPrize">€1,000</div>
+        <div class="hero-stat-label">Prize Pool</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-next-match" id="heroNextMatch" data-target="2026-09-19T16:00:00Z">
+    <div class="hero-next-label">
+      <i class="fas fa-trophy" style="color:var(--clr-gold);margin-right:6px"></i>
+      Grand Final &nbsp;·&nbsp; September 19
+    </div>
+    <div class="hero-match-teams" style="justify-content:center;text-align:center">
+      <span style="font-size:.82rem;font-family:var(--font-mono);letter-spacing:.08em;color:var(--text-secondary)">Top 4 · BO7 · €1,000</span>
+    </div>
+    <div class="hero-countdown">
+      <div class="cd-item">
+        <div class="countdown-num" id="cd-days">--</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="cd-item">
+        <div class="countdown-num" id="cd-hours">--</div>
+        <div class="countdown-label">Hrs</div>
+      </div>
+      <div class="cd-item">
+        <div class="countdown-num" id="cd-mins">--</div>
+        <div class="countdown-label">Min</div>
+      </div>
+      <div class="cd-item">
+        <div class="countdown-num" id="cd-secs">--</div>
+        <div class="countdown-label">Sec</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-bar-item">
+      <div class="stat-bar-num accent" id="sbQuals">4</div>
+      <div class="stat-bar-label">Open Qualifiers</div>
+    </div>
+    <div class="stat-bar-item">
+      <div class="stat-bar-num" id="sbSpots">512</div>
+      <div class="stat-bar-label">Qualifier Spots</div>
+    </div>
+    <div class="stat-bar-item">
+      <div class="stat-bar-num accent" id="sbTeams">10</div>
+      <div class="stat-bar-label">League Teams</div>
+    </div>
+    <div class="stat-bar-item">
+      <div class="stat-bar-num" id="sbPrize">€1,000</div>
+      <div class="stat-bar-label">Prize Pool</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUALIFIERS -->
+<section id="qualifiers">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:48px">
+      <div class="section-label" style="justify-content:center">Phase 01 · Open Qualifiers</div>
+      <h2 class="section-title">Four shots at the <span>League</span>.</h2>
+      <p class="section-subtitle" style="margin-left:auto;margin-right:auto">
+        Four open Matcherino qualifiers, 128 team spots each. Win one to lock a League slot,
+        or stack points across all four to make the top 4.
+      </p>
+    </div>
+
+    <div class="qualifier-grid" id="qualifierGrid">
+      <div class="data-loading" style="grid-column:1/-1"><i class="fas fa-spinner fa-spin"></i>Loading qualifiers from Matcherino…</div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMAT EXPLAINED -->
+<section style="background:var(--bg-secondary);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:48px">
+      <div class="section-label">The Format</div>
+      <h2 class="section-title">From qualifier to <span>Grand Final</span>.</h2>
+      <p class="section-subtitle">Four discrete phases. Sixteen weeks. One champion crowned in Antwerp.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:18px">
+
+      <!-- Phase 01 -->
+      <div class="card phase-card reveal">
+        <div class="phase-num">01</div>
+        <div class="phase-body">
+          <span class="tag tag-neutral">Qualifiers</span>
+          <div class="phase-headline">4 open Matcherino events</div>
+          <div class="phase-desc">128 spots each · BO3 · cast by YF7. The winner of each qualifier qualifies directly for the League.</div>
+        </div>
+        <div class="phase-stat">
+          <div class="phase-stat-val">512</div>
+          <div class="phase-stat-key">Total spots</div>
+        </div>
+      </div>
+
+      <!-- Phase 02 -->
+      <div class="card phase-card reveal">
+        <div class="phase-num">02</div>
+        <div class="phase-body">
+          <span class="tag tag-neutral">Points race</span>
+          <div class="phase-headline">Didn't win a qualifier? Still qualify on points.</div>
+          <div class="phase-desc">Place in any qualifier to earn points. The top point-getters across all four qualifiers grab the remaining League slots.</div>
+          <div class="points-grid">
+            <div class="points-row"><span class="points-place">2nd</span><span class="points-val">10 pts</span></div>
+            <div class="points-row"><span class="points-place">3rd – 4th</span><span class="points-val">5 pts</span></div>
+            <div class="points-row"><span class="points-place">5th – 8th</span><span class="points-val">2 pts</span></div>
+          </div>
+        </div>
+        <div class="phase-stat">
+          <div class="phase-stat-val">TOP 4</div>
+          <div class="phase-stat-key">Qualify on points</div>
+        </div>
+      </div>
+
+      <!-- Phase 03 -->
+      <div class="card phase-card reveal">
+        <div class="phase-num">03</div>
+        <div class="phase-body">
+          <span class="tag tag-neutral">League · Jul 21 to Aug 30</span>
+          <div class="phase-headline">10 teams. 45 matches. Single round robin.</div>
+          <div class="phase-desc">4 qualifier winners + 4 points qualifiers + 2 auto-qualified Slice rosters. BO4 every matchday at 18:00 CEST.</div>
+          <div class="points-grid">
+            <div class="points-row"><span class="points-place">Win</span><span class="points-val">3 pts</span></div>
+            <div class="points-row"><span class="points-place">Draw</span><span class="points-val">1 pt</span></div>
+            <div class="points-row"><span class="points-place">Loss</span><span class="points-val">0 pts</span></div>
+          </div>
+        </div>
+        <div class="phase-stat">
+          <div class="phase-stat-val">15</div>
+          <div class="phase-stat-key">Matchdays</div>
+        </div>
+      </div>
+
+      <!-- Phase 04 -->
+      <div class="card phase-card phase-card-final reveal">
+        <div class="phase-num">04</div>
+        <div class="phase-body">
+          <span class="tag tag-neutral">Grand Final · September 19</span>
+          <div class="phase-headline">Top 4 teams. One €1,000 prize pool.</div>
+          <div class="phase-desc">The four highest-ranked League teams advance to the Grand Final to play for the trophy and the lion's share of the pot.</div>
+        </div>
+        <div class="phase-stat">
+          <div class="phase-stat-val gold">€1,000</div>
+          <div class="phase-stat-key">Total prize pool</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRIZE POOL -->
+<section>
+  <div class="container">
+    <div class="reveal" style="margin-bottom:40px">
+      <div class="section-label">Prize Pool</div>
+      <h2 class="section-title">€1,000 on the <span>line</span>.</h2>
+      <p class="section-subtitle">Split across the top four finishers of the Grand Final.</p>
+    </div>
+
+    <div class="prize-grid" id="prizeGrid">
+      <div class="prize-card gold">
+        <div class="prize-icon"><i class="fas fa-trophy"></i></div>
+        <div class="prize-place">1st place</div>
+        <div class="prize-amount">€425</div>
+      </div>
+      <div class="prize-card silver">
+        <div class="prize-icon"><i class="fas fa-medal"></i></div>
+        <div class="prize-place">2nd place</div>
+        <div class="prize-amount">€225</div>
+      </div>
+      <div class="prize-card bronze">
+        <div class="prize-icon"><i class="fas fa-medal"></i></div>
+        <div class="prize-place">3rd place</div>
+        <div class="prize-amount">€120</div>
+      </div>
+      <div class="prize-card">
+        <div class="prize-icon"><i class="fas fa-award"></i></div>
+        <div class="prize-place">4th place</div>
+        <div class="prize-amount">€90</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STANDINGS + TOP PLAYERS -->
+<section>
+  <div class="container">
+    <div class="grid-2 side-by-side" style="gap:40px;align-items:stretch">
+
+      <!-- STANDINGS -->
+      <div class="reveal side-col">
+        <div class="section-label">Season 2 · Points Race</div>
+        <h2 class="section-title">Next to <span>Qualify</span></h2>
+        <p class="section-subtitle">Top 5 teams chasing a League slot on points. Teams that already won a qualifier are hidden.</p>
+
+        <div id="standingsList" class="side-list">
+          <div class="data-loading"><i class="fas fa-spinner fa-spin"></i>Loading standings...</div>
+        </div>
+
+        <div class="side-col-foot">
+          <a href="teams.html" class="btn btn-ghost">Full Leaderboard <i class="fas fa-arrow-right" style="font-size:.75rem"></i></a>
+        </div>
+      </div>
+
+      <!-- TOP PLAYERS -->
+      <div class="reveal reveal-delay-2 side-col">
+        <div class="section-label">Season 2</div>
+        <h2 class="section-title">Top <span>Players</span></h2>
+        <p class="section-subtitle">Ranked by total damage across all completed Matcherino games.</p>
+
+        <div id="topPlayersList" class="side-list">
+          <div class="data-loading"><i class="fas fa-spinner fa-spin"></i>Loading players...</div>
+        </div>
+
+        <div class="side-col-foot">
+          <a href="players.html" class="btn btn-ghost">Full Leaderboard <i class="fas fa-arrow-right" style="font-size:.75rem"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- KEYTRADE SPONSOR STRIP -->
+<div class="sponsor-strip">
+  <div class="container">
+    <div class="sponsor-strip-inner">
+      <span class="sponsor-label-text">Official Sponsors</span>
+      <div style="width:1px;height:24px;background:var(--border)"></div>
+      <a href="keytrade.html" class="keytrade-badge">
+        <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
+        <div>
+          <div class="keytrade-badge-name">Keytrade Bank</div>
+          <div class="keytrade-badge-role">Title Sponsor · Season 2</div>
+        </div>
+      </a>
+      <div style="color:var(--text-muted);font-size:.8rem;max-width:300px;text-align:center;line-height:1.5">
+        Slice League is proudly powered by <a href="keytrade.html" style="color:#5b9fef;text-decoration:underline">Keytrade Bank</a>, Belgium's online investment bank.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo">
+          <div class="logo-icon"><img src="assets/logo.png" alt=""></div>
+          SLICE <span style="color:var(--clr-red)">LEAGUE</span>
+        </div>
+        <p class="footer-brand-desc">Belgium's premier Brawl Stars esports tournament. Bringing the best Belgian and Benelux Brawl Stars players together since 2025.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/slice.esport/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@slice.esport" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.youtube.com/channel/UC7NcGBcvwRBXCrHRJ6mHneg" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tournament</div>
+        <ul>
+          <li><a href="bracket.html">Bracket</a></li>
+          <li><a href="bracket.html">Standings</a></li>
+          <li><a href="schedule.html">Schedule</a></li>
+          <li><a href="schedule.html">Live Streams</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Community</div>
+        <ul>
+          <li><a href="players.html">Players</a></li>
+          <li><a href="teams.html">Teams</a></li>
+          <li><a href="https://liquipedia.net/brawlstars/Slice_League/League" target="_blank">Liquipedia</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Partners</div>
+        <ul>
+          <li><a href="keytrade.html">Keytrade Bank</a></li>
+          <li><a href="https://www.keytradebank.be" target="_blank">keytradebank.be</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Slice League · All rights reserved</span>
+      <span>Organized by <span style="color:var(--text-secondary)">Nikounaki</span> · Belgium</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+const API = '';
+const DEFAULT_LOGO = 'assets/default.png';
+const DEFAULT_AVATAR = 'assets/player.png';
+
+async function apiFetch(path) {
+  const r = await fetch(API + path);
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+function teamLogoHTML(team, size) {
+  const src = (team && team.logo_url) ? team.logo_url : DEFAULT_LOGO;
+  return `<div class="team-logo ${size||'sm'}"><img src="${src}" alt="" onerror="this.src='${DEFAULT_LOGO}'"></div>`;
+}
+
+function playerAvatarImg(p) {
+  const src = (p && p.avatar_url) ? p.avatar_url : DEFAULT_AVATAR;
+  return `<img src="${src}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">`;
+}
+
+function rankClass(i) {
+  return i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
+}
+
+function fmtNum(n) {
+  return Number(n || 0).toLocaleString();
+}
+
+function kd(p) {
+  const value = Number(p.kd ?? (p.deaths > 0 ? p.elims / p.deaths : p.elims));
+  return Number.isFinite(value) ? value.toFixed(2) : '0.00';
+}
+
+function fmt(dt) {
+  if (!dt) return '';
+  const d = new Date(dt);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+/* Collapsible toggles */
+function bindCollapsibles() {
+  document.querySelectorAll('.collapsible-toggle').forEach(btn => {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      const collapsed = target.getAttribute('data-collapsed') === 'true';
+      target.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+      const label = btn.querySelector('.ctxt');
+      if (label) {
+        const open = btn.dataset.openLabel || 'Show less';
+        const closed = btn.dataset.closedLabel || label.textContent;
+        if (!btn.dataset.closedLabel) btn.dataset.closedLabel = closed;
+        label.textContent = collapsed ? open : btn.dataset.closedLabel;
+      }
+    });
+  });
+}
+
+/* Force the closest .reveal ancestor to be visible — for lists whose
+   final height makes the IntersectionObserver miss them. */
+function revealNow(el) {
+  if (!el) return;
+  const r = el.closest('.reveal');
+  if (r) r.classList.add('visible');
+}
+
+/* Standings — points race (qualified teams hidden) */
+function standingsRowHTML(t, i) {
+  return `
+    <div class="card side-row">
+      <div class="side-rank" style="color:${RANK_COLORS[i] || 'var(--text-muted)'}">#${i + 1}</div>
+      <div class="lb-avatar">
+        <img src="${t.logo_url || DEFAULT_LOGO}" alt="" onerror="this.src='${DEFAULT_LOGO}'">
+      </div>
+      <div class="side-meta">
+        <div class="side-name">${t.name}</div>
+        <div class="side-sub">${t.record ? t.record : (t.wins||0) + 'W · ' + (t.losses||0) + 'L'}</div>
+      </div>
+      <div class="side-stat">
+        <div class="side-stat-val">${t.points}</div>
+        <div class="side-stat-key">Points</div>
+      </div>
+    </div>`;
+}
+
+function isAlreadyQualified(t) {
+  return (t.placements || []).some(p => p.placement === 1);
+}
+
+async function loadStandings() {
+  const el = document.getElementById('standingsList');
+  try {
+    const data = await apiFetch('/api/standings');
+    const contenders = data.filter(t => !isAlreadyQualified(t)).slice(0, 5);
+    if (!contenders.length) {
+      el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted)">No contenders yet.</div>';
+    } else {
+      el.innerHTML = contenders.map((t, i) => standingsRowHTML(t, i)).join('');
+    }
+  } catch {
+    el.innerHTML = buildStaticStandings();
+  }
+  revealNow(el);
+}
+
+function buildStaticStandings() {
+  const rows = [
+    {name:'Absolute Cinema',wins:5,losses:3,points:15,placements:[{placement:2,qualifier:3},{placement:5,qualifier:1},{placement:17,qualifier:2}]},
+    {name:'TalentsLab',wins:4,losses:1,points:12,placements:[{placement:2,qualifier:2}]},
+    {name:'AM UN GRATAR',wins:4,losses:1,points:12,placements:[{placement:2,qualifier:1}]},
+    {name:'PoisonBienfruité.',wins:4,losses:2,points:12,placements:[{placement:3,qualifier:2},{placement:5,qualifier:3}]},
+    {name:'Tung Sahur',wins:3,losses:1,points:9,placements:[{placement:3,qualifier:2}]},
+  ];
+  return rows.map((t, i) => standingsRowHTML(t, i)).join('');
+}
+
+/* Top players */
+const RANK_COLORS = ['#f0c040','#94a3b8','#a16207'];
+
+function playerRowHTML(p, i, statValue, statLabel) {
+  return `
+    <div class="card side-row">
+      <div class="side-rank" style="color:${RANK_COLORS[i] || 'var(--text-muted)'}">#${i + 1}</div>
+      <div class="lb-avatar">${playerAvatarImg(p)}</div>
+      <div class="side-meta">
+        <div class="side-name">${p.ign}</div>
+        <div class="side-sub">${(p.team_abbr || p.team || '')}${p.country ? ' · ' + p.country : ''}</div>
+      </div>
+      <div class="side-stat">
+        <div class="side-stat-val">${statValue}</div>
+        <div class="side-stat-key">${statLabel}</div>
+      </div>
+      <span class="tag tag-orange side-tag">${kd(p)} K/D</span>
+    </div>`;
+}
+
+async function loadTopPlayers() {
+  const el = document.getElementById('topPlayersList');
+  try {
+    const data = await apiFetch('/api/players');
+    const top = data
+      .sort((a,b) => (b.total_damage || b.damage || 0) - (a.total_damage || a.damage || 0))
+      .slice(0, 5);
+    el.innerHTML = top.map((p, i) => playerRowHTML(p, i, fmtNum(p.total_damage || p.damage || 0), 'Damage')).join('');
+  } catch {
+    el.innerHTML = buildStaticPlayers();
+  }
+  revealNow(el);
+}
+
+function buildStaticPlayers() {
+  const players = [
+    {ign:'mikeyyy',team:'IFP',country:'BE',elims:347,kd:3.2},
+    {ign:'Yesse',team:'IFP',country:'NL',elims:321,kd:2.9},
+    {ign:'BronzeKing',team:'TOP',country:'BE',elims:308,kd:2.8},
+    {ign:'Rensboy',team:'FUR',country:'NL',elims:298,kd:2.7},
+    {ign:'Djpatatje',team:'IFP',country:'BE',elims:287,kd:2.6},
+  ];
+  return players.map((p, i) => playerRowHTML(p, i, p.elims, 'Elims')).join('');
+}
+
+/* Schedule */
+async function loadSchedule() {
+  try {
+    const data = await apiFetch('/api/schedule');
+    const completed = data.filter(m => ['done', 'completed'].includes(String(m.status || '').toLowerCase())).slice(-10).reverse();
+    const upcoming  = data.filter(m => ['upcoming', 'waiting', 'ready'].includes(String(m.status || '').toLowerCase())).slice(0, 3);
+
+    const resEl = document.getElementById('recentResults');
+    if (completed.length) {
+      resEl.innerHTML = completed.map((m, idx) => {
+        const w1 = m.score1 > m.score2, w2 = m.score2 > m.score1;
+        const extra = idx >= 3 ? ' collapsible-extra' : '';
+        return `<div class="result-row${extra}">
+          <div class="result-rd">${m.phase?.slice(0,3).toUpperCase()||'RD'}</div>
+          <div class="result-teams">
+            <span class="result-team" style="${w1?'font-weight:700':'opacity:.6'}">${m.team1_name||'TBD'}</span>
+            <span class="result-score">
+              <span class="${w1?'score-w':'score-l'}">${m.score1??'?'}</span> -
+              <span class="${w2?'score-w':'score-l'}">${m.score2??'?'}</span>
+            </span>
+            <span class="result-team" style="${w2?'font-weight:700':'opacity:.6'}">${m.team2_name||'TBD'}</span>
+          </div>
+          <div class="result-date">${fmt(m.match_date)}</div>
+        </div>`;
+      }).join('');
+    } else {
+      resEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted)">No results yet.</div>';
+    }
+
+    const upEl = document.getElementById('upcomingMatches');
+    if (upcoming.length) {
+      upEl.innerHTML = upcoming.map(m => `
+        <div class="match-card">
+          <div class="match-header">
+            <div>
+              <span class="match-phase">${m.phase||'Match'}</span>
+              <div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">${m.match_date ? new Date(m.match_date).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'TBD'}</div>
+            </div>
+            <span class="tag tag-orange">Upcoming</span>
+          </div>
+          <div class="match-teams">
+            <div class="match-team">
+              ${teamLogoHTML({logo_url: m.team1_logo}, 'md')}
+              <div class="match-team-name">${m.team1_name||'TBD'}</div>
+            </div>
+            <div class="match-score"><span class="score-upcoming">VS</span></div>
+            <div class="match-team right">
+              ${teamLogoHTML({logo_url: m.team2_logo}, 'md')}
+              <div class="match-team-name">${m.team2_name||'TBD'}</div>
+            </div>
+          </div>
+        </div>`).join('');
+    } else {
+      upEl.innerHTML = buildStaticUpcoming();
+    }
+  } catch {
+    document.getElementById('recentResults').innerHTML = buildStaticResults();
+    document.getElementById('upcomingMatches').innerHTML = buildStaticUpcoming();
+  }
+}
+
+function buildStaticResults() {
+  const results = [
+    {rd:'Rd. 7',t1:'Imagine Failing Pro',t2:'Paurigon-Z',s1:3,s2:1,date:'Jun 8'},
+    {rd:'Rd. 7',t1:'TOP Esports',t2:'Nova Rising',s1:3,s2:2,date:'Jun 8'},
+    {rd:'Rd. 7',t1:'Furies',t2:'Haneki Corp',s1:3,s2:0,date:'Jun 8'},
+    {rd:'Rd. 6',t1:'Revoy Esports',t2:'Imagine Failing Pro',s1:1,s2:3,date:'Jun 1'},
+    {rd:'Rd. 6',t1:'Revoy Esports',t2:'Skepsis Gaming',s1:3,s2:1,date:'Jun 1'},
+  ];
+  return results.map((r, idx) => {
+    const w1 = r.s1 > r.s2;
+    const extra = idx >= 3 ? ' collapsible-extra' : '';
+    return `<div class="result-row${extra}">
+      <div class="result-rd">${r.rd}</div>
+      <div class="result-teams">
+        <span class="result-team" style="${w1?'font-weight:700':'opacity:.6'}">${r.t1}</span>
+        <span class="result-score"><span class="${w1?'score-w':'score-l'}">${r.s1}</span> - <span class="${!w1?'score-w':'score-l'}">${r.s2}</span></span>
+        <span class="result-team" style="${!w1?'font-weight:700':'opacity:.6'}">${r.t2}</span>
+      </div>
+      <div class="result-date">${r.date}</div>
+    </div>`;
+  }).join('');
+}
+
+function buildStaticUpcoming() {
+  return `
+    <div class="match-card">
+      <div class="match-header">
+        <div><span class="match-phase">Semi Final 1</span><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Jun 15, 2026 · 19:00 CET</div></div>
+        <span class="tag tag-orange">Upcoming</span>
+      </div>
+      <div class="match-teams">
+        <div class="match-team">${teamLogoHTML({}, 'md')}<div class="match-team-name">Imagine Failing Pro</div></div>
+        <div class="match-score"><span class="score-upcoming">VS</span></div>
+        <div class="match-team right">${teamLogoHTML({}, 'md')}<div class="match-team-name">Furies</div></div>
+      </div>
+    </div>
+    <div class="match-card">
+      <div class="match-header">
+        <div><span class="match-phase">Semi Final 2</span><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Jun 15, 2026 · 21:00 CET</div></div>
+        <span class="tag tag-orange">Upcoming</span>
+      </div>
+      <div class="match-teams">
+        <div class="match-team">${teamLogoHTML({}, 'md')}<div class="match-team-name">TOP Esports</div></div>
+        <div class="match-score"><span class="score-upcoming">VS</span></div>
+        <div class="match-team right">${teamLogoHTML({}, 'md')}<div class="match-team-name">Revoy Esports</div></div>
+      </div>
+    </div>
+    <div class="match-card" style="border-color:var(--clr-accent-border);background:linear-gradient(180deg,var(--clr-accent-soft) 0%,var(--bg-card) 60%)">
+      <div class="match-header">
+        <div><span class="match-phase">Grand Final</span><div style="font-size:.8rem;color:var(--text-secondary);margin-top:2px">Jul 6, 2026 · 18:00 CET</div></div>
+        <span class="tag tag-purple">TBD</span>
+      </div>
+      <div class="match-teams">
+        <div class="match-team">${teamLogoHTML({}, 'md')}<div class="match-team-name" style="color:var(--text-muted)">SF1 Winner</div></div>
+        <div class="match-score"><span class="score-upcoming">VS</span></div>
+        <div class="match-team right">${teamLogoHTML({}, 'md')}<div class="match-team-name" style="color:var(--text-muted)">SF2 Winner</div></div>
+      </div>
+    </div>`;
+}
+
+async function loadTournament() {
+  try { await apiFetch('/api/tournament'); } catch {}
+}
+
+/* Qualifiers (Matcherino proxy) */
+const STATIC_QUALIFIERS = [
+  { id: 208621, number: 1, status: 'closed', startAt: '2026-06-19T16:00:00Z' },
+  { id: 210821, number: 2, status: 'closed', startAt: '2026-06-21T17:00:00Z' },
+  { id: 210822, number: 3, status: 'ready',  startAt: '2026-06-27T16:00:00Z' },
+  { id: 210823, number: 4, status: 'ready',  startAt: '2026-07-04T16:00:00Z' },
+];
+
+function qualStatusBadge(q) {
+  const now = new Date();
+  const start = q.startAt ? new Date(q.startAt) : null;
+  const status = (q.status || '').toLowerCase();
+
+  if (status === 'closed' || status === 'finished' || (start && start < now && now - start > 86400000)) {
+    return { label: 'Completed', cls: 'tag-purple' };
+  }
+  if (start && start <= now && (now - start) < 86400000) {
+    return { label: 'Live', cls: 'tag-orange' };
+  }
+  if (start && (start - now) < 86400000 * 3) {
+    return { label: 'This Week', cls: 'tag-green' };
+  }
+  return { label: 'Upcoming', cls: 'tag-cyan' };
+}
+
+function qualDateParts(iso) {
+  if (!iso) return { day: '--', month: '---', time: '--:--' };
+  const d = new Date(iso);
+  return {
+    day:   d.toLocaleDateString('en-GB', { day: '2-digit' }),
+    month: d.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase(),
+    time:  d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) + ' CET',
+  };
+}
+
+function renderQualifiers(list) {
+  const el = document.getElementById('qualifierGrid');
+  if (!el) return;
+  el.innerHTML = list.map(q => {
+    const b   = qualStatusBadge(q);
+    const dp  = qualDateParts(q.startAt);
+    return `
+      <a href="https://matcherino.com/tournaments/${q.id}" target="_blank" rel="noopener" class="qualifier-card" style="text-decoration:none;color:inherit;display:block">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px">
+          <div class="qualifier-num">Qualifier #${q.number}</div>
+          <span class="tag ${b.cls}">${b.label}</span>
+        </div>
+
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:18px">
+          <div style="font-family:var(--font-head);font-size:3rem;font-weight:700;letter-spacing:-.03em;color:var(--text-primary);line-height:1">${dp.day}</div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:.78rem;font-weight:500;letter-spacing:.1em;color:var(--clr-accent);text-transform:uppercase">${dp.month}</div>
+            <div style="font-family:var(--font-mono);font-size:.78rem;color:var(--text-secondary)">${dp.time}</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;padding-top:16px;border-top:1px solid var(--border);font-size:.82rem;color:var(--text-secondary)">
+          <span><i class="fas fa-users" style="color:var(--clr-accent);margin-right:6px"></i>128 spots</span>
+          <span><i class="fas fa-microphone" style="color:var(--clr-accent);margin-right:6px"></i>YF7</span>
+          <span style="margin-left:auto;color:var(--text-muted)"><i class="fas fa-external-link-alt"></i></span>
+        </div>
+      </a>`;
+  }).join('');
+
+  const sbSpots = document.getElementById('sbSpots');
+  if (sbSpots) sbSpots.textContent = (list.length * 128).toLocaleString();
+}
+
+async function loadQualifiers() {
+  try {
+    const data = await apiFetch('/api/qualifiers');
+    if (Array.isArray(data) && data.length) {
+      renderQualifiers(data);
+      return;
+    }
+  } catch {}
+  renderQualifiers(STATIC_QUALIFIERS);
+}
+
+/* Hero finals countdown (Sept 19) */
+function startHeroCountdown() {
+  const root = document.getElementById('heroNextMatch');
+  if (!root) return;
+  const target = new Date(root.dataset.target || '2026-09-19T16:00:00Z');
+  const cdDays  = document.getElementById('cd-days');
+  const cdHours = document.getElementById('cd-hours');
+  const cdMins  = document.getElementById('cd-mins');
+  const cdSecs  = document.getElementById('cd-secs');
+  if (!cdDays) return;
+
+  function tick() {
+    const diff = target - new Date();
+    if (diff <= 0) {
+      cdDays.textContent = cdHours.textContent = cdMins.textContent = cdSecs.textContent = '00';
+      return;
+    }
+    cdDays.textContent  = String(Math.floor(diff / 86400000)).padStart(2, '0');
+    cdHours.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+    cdMins.textContent  = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    cdSecs.textContent  = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await Promise.all([loadQualifiers(), loadStandings(), loadTopPlayers(), loadTournament()]);
+  bindCollapsibles();
+  startHeroCountdown();
+});
+</script>
+</body>
+</html>
