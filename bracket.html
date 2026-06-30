@@ -34,7 +34,13 @@
       aspect-ratio: 16/9;
       background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
       background-size: cover; background-position: center;
+      background-repeat: no-repeat;
       position: relative;
+      width: 100%;
+    }
+    /* Fallback for browsers without aspect-ratio support */
+    @supports not (aspect-ratio: 16/9) {
+      .tourney-img { height: 0; padding-bottom: 56.25%; }
     }
     .tourney-img::after {
       content: ''; position: absolute; inset: 0;
