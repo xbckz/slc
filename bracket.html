@@ -88,21 +88,32 @@
       border-radius: var(--radius);
       overflow: hidden;
     }
-    .bracket-viewer:fullscreen {
+    .bracket-viewer:fullscreen,
+    .bracket-viewer.pseudo-fullscreen {
       width: 100vw;
       height: 100vh;
+      height: 100svh;
       border: 0;
       border-radius: 0;
       background: var(--bg-primary);
       display: flex;
       flex-direction: column;
     }
-    .bracket-viewer:fullscreen .bracket-scroll {
+    .bracket-viewer.pseudo-fullscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      margin: 0;
+    }
+    .bracket-viewer:fullscreen .bracket-scroll,
+    .bracket-viewer.pseudo-fullscreen .bracket-scroll {
       flex: 1;
       max-height: none;
       height: calc(100vh - 74px);
+      height: calc(100svh - 74px);
       min-height: 0;
     }
+    body.bracket-pseudo-fs { overflow: hidden; touch-action: none; }
     .bracket-toolbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 22px;
@@ -152,7 +163,12 @@
       overflow: auto; padding: 34px 30px;
       height: clamp(720px, 88vh, 940px);
       max-height: none;
+      touch-action: pan-x pan-y;
     }
+    .b-match-cell { display: flex; flex-direction: column; }
+    .b-match-cell + .b-match-cell { margin-top: 14px; }
+    .b-match-spacer { opacity: 0; pointer-events: none; }
+    .b-match-cell[aria-hidden="true"] .b-round-tag { opacity: 0; }
     .bracket-wrap {
       position: relative;
     }
@@ -185,16 +201,15 @@
     .b-round {
       display: flex; flex-direction: column; flex: 0 0 230px;
     }
-    .b-round-title {
-      text-align: center;
+    .b-round-title { display: none; }
+    .b-round-tag {
       font-family: var(--font-mono);
-      font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.14em;
+      font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em;
       color: var(--text-muted); font-weight: 500;
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 6px;
+      padding: 0 2px;
     }
-    .b-round-title.final { color: var(--clr-gold); }
+    .b-round-tag.final { color: var(--clr-gold); }
 
     .b-matches {
       display: flex; flex-direction: column; flex: 1;
@@ -513,16 +528,39 @@ function setupZoomControls() {
     fullBtn.onclick = async () => {
       const viewer = document.querySelector('.bracket-viewer');
       if (!viewer) return;
+      const supportsNativeFs = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+      const inNativeFs = document.fullscreenElement === viewer || document.webkitFullscreenElement === viewer;
+      const inPseudoFs = viewer.classList.contains('pseudo-fullscreen');
       try {
-        if (document.fullscreenElement === viewer) {
-          await document.exitFullscreen();
-        } else {
+        if (inNativeFs) {
+          (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        } else if (inPseudoFs) {
+          viewer.classList.remove('pseudo-fullscreen');
+          document.body.classList.remove('bracket-pseudo-fs');
+          updateFullscreenIcon();
+        } else if (supportsNativeFs && viewer.requestFullscreen) {
           await viewer.requestFullscreen();
+        } else if (supportsNativeFs && viewer.webkitRequestFullscreen) {
+          viewer.webkitRequestFullscreen();
+        } else {
+          /* iOS Safari: fall back to position:fixed overlay */
+          viewer.classList.add('pseudo-fullscreen');
+          document.body.classList.add('bracket-pseudo-fs');
+          updateFullscreenIcon();
         }
       } catch {}
       requestAnimationFrame(applyZoom);
     };
   }
+}
+
+function updateFullscreenIcon() {
+  const icon = document.querySelector('#zoomFullscreen i');
+  if (!icon) return;
+  const viewer = document.querySelector('.bracket-viewer');
+  const isFs = document.fullscreenElement || document.webkitFullscreenElement
+    || (viewer && viewer.classList.contains('pseudo-fullscreen'));
+  icon.className = isFs ? 'fas fa-compress' : 'fas fa-expand';
 }
 
 function drawConnectors() {
@@ -633,12 +671,16 @@ function renderBracket() {
                   <div class="b-round-title${isFinal ? ' final' : ''}">${round.label}</div>
                   <div class="b-matches">
                     ${(round.matches || []).map(match => {
+                      const roundTag = `<div class="b-round-tag${isFinal ? ' final' : ''}">${round.label}</div>`;
                       if (!isPlayableMatch(match)) {
                         return `
-                          <div class="b-match b-match-spacer" aria-hidden="true">
-                            ${match.status ? `<div class="b-match-label">${match.status}${match.hasStats ? ' - stats' : ''}</div>` : ''}
-                            ${renderSide(match, 'teamA')}
-                            ${renderSide(match, 'teamB')}
+                          <div class="b-match-cell" aria-hidden="true">
+                            ${roundTag}
+                            <div class="b-match b-match-spacer">
+                              ${match.status ? `<div class="b-match-label">${match.status}${match.hasStats ? ' - stats' : ''}</div>` : ''}
+                              ${renderSide(match, 'teamA')}
+                              ${renderSide(match, 'teamB')}
+                            </div>
                           </div>
                         `;
                       }
@@ -648,14 +690,17 @@ function renderBracket() {
                           ? (match.teamB?.team_key || '')
                           : '';
                       return `
-                        <div class="b-match${isFinal ? ' final-match' : ''}"
-                             data-winner="${match.winnerSide || ''}"
-                             data-outcome-team="${winKey}"
-                             data-team-a-key="${match.teamA?.team_key || ''}"
-                             data-team-b-key="${match.teamB?.team_key || ''}">
-                          ${match.status ? `<div class="b-match-label">${match.status}${match.hasStats ? ' · stats' : ''}</div>` : ''}
-                          ${renderSide(match, 'teamA')}
-                          ${renderSide(match, 'teamB')}
+                        <div class="b-match-cell">
+                          ${roundTag}
+                          <div class="b-match${isFinal ? ' final-match' : ''}"
+                               data-winner="${match.winnerSide || ''}"
+                               data-outcome-team="${winKey}"
+                               data-team-a-key="${match.teamA?.team_key || ''}"
+                               data-team-b-key="${match.teamB?.team_key || ''}">
+                            ${match.status ? `<div class="b-match-label">${match.status}${match.hasStats ? ' · stats' : ''}</div>` : ''}
+                            ${renderSide(match, 'teamA')}
+                            ${renderSide(match, 'teamB')}
+                          </div>
                         </div>
                       `;
                     }).join('') || '<div class="placeholder-state" style="padding:24px"><i class="fas fa-circle-notch"></i>No matches yet</div>'}
@@ -704,12 +749,22 @@ function renderBracket() {
 }
 
 window.addEventListener('resize', () => requestAnimationFrame(drawConnectors));
-document.addEventListener('fullscreenchange', () => {
-  const icon = document.querySelector('#zoomFullscreen i');
-  if (icon) {
-    icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => {
+  document.addEventListener(ev, () => {
+    updateFullscreenIcon();
+    requestAnimationFrame(applyZoom);
+  });
+});
+/* Esc key exits pseudo-fullscreen */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const viewer = document.querySelector('.bracket-viewer.pseudo-fullscreen');
+  if (viewer) {
+    viewer.classList.remove('pseudo-fullscreen');
+    document.body.classList.remove('bracket-pseudo-fs');
+    updateFullscreenIcon();
+    requestAnimationFrame(applyZoom);
   }
-  requestAnimationFrame(applyZoom);
 });
 
 async function loadBrackets() {
