@@ -9,29 +9,22 @@
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="has-notif">
-
-<!-- NOTIFICATION BAR -->
-<div class="notif-bar" id="notifBar">
-  Qualifier <strong>#3</strong> begins <strong>June 27 · 18:00 CET</strong> · 128 spots, cast by YF7.
-  <a href="https://matcherino.com/tournaments/210822" target="_blank" rel="noopener">Register on Matcherino →</a>
-  <button class="notif-dismiss" aria-label="Dismiss notification">×</button>
-</div>
+<body>
 
 <!-- NAVIGATION -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
       SLICE <span>LEAGUE</span>
     </a>
     <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
-      <a href="bracket.html">Bracket</a>
-      <a href="players.html">Players</a>
-      <a href="teams.html">Teams</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="keytrade.html">Keytrade</a>
+      <a href="/" class="active">Home</a>
+      <a href="/bracket">Bracket</a>
+      <a href="/players">Players</a>
+      <a href="/teams">Teams</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/keytrade">Keytrade</a>
     </div>
     <div class="nav-actions">
       <div class="nav-socials">
@@ -49,12 +42,12 @@
   </div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html" class="active">Home</a>
-  <a href="bracket.html">Bracket</a>
-  <a href="players.html">Players</a>
-  <a href="teams.html">Teams</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="keytrade.html">Keytrade</a>
+  <a href="/" class="active">Home</a>
+  <a href="/bracket">Bracket</a>
+  <a href="/players">Players</a>
+  <a href="/teams">Teams</a>
+  <a href="/schedule">Schedule</a>
+  <a href="/keytrade">Keytrade</a>
 </div>
 
 <!-- HERO -->
@@ -78,7 +71,7 @@
       <a href="#qualifiers" class="btn btn-primary">
         <i class="fas fa-trophy"></i> View Qualifiers
       </a>
-      <a href="schedule.html" class="btn btn-secondary">
+      <a href="/schedule" class="btn btn-secondary">
         <i class="fas fa-calendar"></i> Watch Live
       </a>
     </div>
@@ -176,7 +169,7 @@
       <p class="section-subtitle">Four discrete phases. Sixteen weeks. One champion crowned in Antwerp.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr;gap:18px">
+    <div class="phase-grid" style="display:grid;grid-template-columns:1fr;gap:18px">
 
       <!-- Phase 01 -->
       <div class="card phase-card reveal">
@@ -298,7 +291,7 @@
         </div>
 
         <div class="side-col-foot">
-          <a href="teams.html" class="btn btn-ghost">Full Leaderboard <i class="fas fa-arrow-right" style="font-size:.75rem"></i></a>
+          <a href="/teams" class="btn btn-ghost">Full Leaderboard <i class="fas fa-arrow-right" style="font-size:.75rem"></i></a>
         </div>
       </div>
 
@@ -313,7 +306,7 @@
         </div>
 
         <div class="side-col-foot">
-          <a href="players.html" class="btn btn-ghost">Full Leaderboard <i class="fas fa-arrow-right" style="font-size:.75rem"></i></a>
+          <a href="/players" class="btn btn-ghost">Full Leaderboard <i class="fas fa-arrow-right" style="font-size:.75rem"></i></a>
         </div>
       </div>
     </div>
@@ -327,7 +320,7 @@
     <div class="sponsor-strip-inner">
       <span class="sponsor-label-text">Official Sponsors</span>
       <div style="width:1px;height:24px;background:var(--border)"></div>
-      <a href="keytrade.html" class="keytrade-badge">
+      <a href="/keytrade" class="keytrade-badge">
         <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
         <div>
           <div class="keytrade-badge-name">Keytrade Bank</div>
@@ -335,7 +328,7 @@
         </div>
       </a>
       <div style="color:var(--text-muted);font-size:.8rem;max-width:300px;text-align:center;line-height:1.5">
-        Slice League is proudly powered by <a href="keytrade.html" style="color:#5b9fef;text-decoration:underline">Keytrade Bank</a>, Belgium's online investment bank.
+        Slice League is proudly powered by <a href="/keytrade" style="color:#5b9fef;text-decoration:underline">Keytrade Bank</a>, Belgium's online investment bank.
       </div>
     </div>
   </div>
@@ -361,24 +354,24 @@
       <div class="footer-col">
         <div class="footer-col-title">Tournament</div>
         <ul>
-          <li><a href="bracket.html">Bracket</a></li>
-          <li><a href="bracket.html">Standings</a></li>
-          <li><a href="schedule.html">Schedule</a></li>
-          <li><a href="schedule.html">Live Streams</a></li>
+          <li><a href="/bracket">Bracket</a></li>
+          <li><a href="/bracket">Standings</a></li>
+          <li><a href="/schedule">Schedule</a></li>
+          <li><a href="/schedule">Live Streams</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Community</div>
         <ul>
-          <li><a href="players.html">Players</a></li>
-          <li><a href="teams.html">Teams</a></li>
+          <li><a href="/players">Players</a></li>
+          <li><a href="/teams">Teams</a></li>
           <li><a href="https://liquipedia.net/brawlstars/Slice_League/League" target="_blank">Liquipedia</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Partners</div>
         <ul>
-          <li><a href="keytrade.html">Keytrade Bank</a></li>
+          <li><a href="/keytrade">Keytrade Bank</a></li>
           <li><a href="https://www.keytradebank.be" target="_blank">keytradebank.be</a></li>
         </ul>
       </div>
@@ -791,5 +784,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   startHeroCountdown();
 });
 </script>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b125eacd76284d34887f566998affa97"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

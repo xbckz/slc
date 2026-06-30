@@ -362,6 +362,9 @@ STATIC_EXTS = {".html", ".css", ".js", ".json", ".svg", ".ico",
                ".png", ".jpg", ".jpeg", ".webp", ".woff", ".woff2"}
 
 
+PAGES = {"index", "bracket", "players", "teams", "schedule", "keytrade"}
+
+
 @app.route("/")
 def root():
     return send_from_directory(BASE_DIR, "index.html")
@@ -369,6 +372,14 @@ def root():
 
 @app.route("/<path:path>")
 def static_files(path):
+    # Redirect /page.html -> /page (and /index.html -> /)
+    if path.endswith(".html"):
+        stem = path[:-5]
+        if stem == "index":
+            return ("", 301, {"Location": "/"})
+        if stem in PAGES:
+            return ("", 301, {"Location": "/" + stem})
+
     candidate = (BASE_DIR / path).resolve()
     if not str(candidate).startswith(str(BASE_DIR)):
         abort(404)
@@ -377,6 +388,13 @@ def static_files(path):
         if path.endswith((".css", ".js")):
             resp.headers["Cache-Control"] = "no-cache, must-revalidate"
         return resp
+
+    # Clean-URL routing: /bracket -> bracket.html
+    if path in PAGES:
+        html = BASE_DIR / f"{path}.html"
+        if html.is_file():
+            return send_from_directory(BASE_DIR, f"{path}.html")
+
     abort(404)
 
 

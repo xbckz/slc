@@ -279,17 +279,17 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
       SLICE <span>LEAGUE</span>
     </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="bracket.html" class="active">Bracket</a>
-      <a href="players.html">Players</a>
-      <a href="teams.html">Teams</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="keytrade.html">Keytrade</a>
+      <a href="/">Home</a>
+      <a href="/bracket" class="active">Bracket</a>
+      <a href="/players">Players</a>
+      <a href="/teams">Teams</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/keytrade">Keytrade</a>
     </div>
     <div class="nav-actions">
       <div class="nav-socials">
@@ -302,12 +302,12 @@
   </div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Home</a>
-  <a href="bracket.html" class="active">Bracket</a>
-  <a href="players.html">Players</a>
-  <a href="teams.html">Teams</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="keytrade.html">Keytrade</a>
+  <a href="/">Home</a>
+  <a href="/bracket" class="active">Bracket</a>
+  <a href="/players">Players</a>
+  <a href="/teams">Teams</a>
+  <a href="/schedule">Schedule</a>
+  <a href="/keytrade">Keytrade</a>
 </div>
 
 <section class="bracket-section">
@@ -330,7 +330,7 @@
     <div class="sponsor-strip-inner">
       <span class="sponsor-label-text">Official Sponsors</span>
       <div style="width: 1px; height: 24px; background: var(--border);"></div>
-      <a href="keytrade.html" class="keytrade-badge">
+      <a href="/keytrade" class="keytrade-badge">
         <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
         <div class="keytrade-badge-text">
           <span class="keytrade-badge-name">Keytrade Bank</span>
@@ -353,9 +353,9 @@
           <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
         </div>
       </div>
-      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="keytrade.html">Keytrade Bank</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="/bracket">Bracket</a></li><li><a href="/schedule">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="/players">Players</a></li><li><a href="/teams">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="/keytrade">Keytrade Bank</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Slice League · All rights reserved</span>
@@ -720,5 +720,7 @@ async function loadBrackets() {
 
 loadBrackets();
 </script>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b125eacd76284d34887f566998affa97"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

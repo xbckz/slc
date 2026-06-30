@@ -77,17 +77,17 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
       SLICE <span>LEAGUE</span>
     </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="bracket.html">Bracket</a>
-      <a href="players.html">Players</a>
-      <a href="teams.html" class="active">Teams</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="keytrade.html">Keytrade</a>
+      <a href="/">Home</a>
+      <a href="/bracket">Bracket</a>
+      <a href="/players">Players</a>
+      <a href="/teams" class="active">Teams</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/keytrade">Keytrade</a>
     </div>
     <div class="nav-actions">
       <div class="nav-socials">
@@ -100,12 +100,12 @@
   </div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Home</a>
-  <a href="bracket.html">Bracket</a>
-  <a href="players.html">Players</a>
-  <a href="teams.html" class="active">Teams</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="keytrade.html">Keytrade</a>
+  <a href="/">Home</a>
+  <a href="/bracket">Bracket</a>
+  <a href="/players">Players</a>
+  <a href="/teams" class="active">Teams</a>
+  <a href="/schedule">Schedule</a>
+  <a href="/keytrade">Keytrade</a>
 </div>
 
 <section style="padding-top: 56px;">
@@ -125,7 +125,7 @@
     <div class="sponsor-strip-inner">
       <span class="sponsor-label-text">Official Sponsors</span>
       <div style="width: 1px; height: 24px; background: var(--border);"></div>
-      <a href="keytrade.html" class="keytrade-badge">
+      <a href="/keytrade" class="keytrade-badge">
         <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
         <div class="keytrade-badge-text">
           <span class="keytrade-badge-name">Keytrade Bank</span>
@@ -148,9 +148,9 @@
           <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
         </div>
       </div>
-      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="keytrade.html">Keytrade Bank</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="/bracket">Bracket</a></li><li><a href="/schedule">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="/players">Players</a></li><li><a href="/teams">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="/keytrade">Keytrade Bank</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Slice League · All rights reserved</span>
@@ -187,6 +187,12 @@ function playerAvatarImg(p) {
 }
 
 function fmtTeamNum(n) { return Number(n || 0).toLocaleString(); }
+function fmtCompact(n) {
+  const v = Number(n || 0);
+  if (v >= 1_000_000) return (v / 1_000_000).toFixed(v >= 10_000_000 ? 0 : 1) + 'M';
+  if (v >= 1_000)     return (v / 1_000).toFixed(v >= 10_000 ? 0 : 1) + 'K';
+  return String(v);
+}
 function teamKd(value) {
   const n = Number(value || 0);
   return Number.isFinite(n) ? n.toFixed(2) : '0.00';
@@ -242,16 +248,16 @@ function rosterRow(player) {
   return `
     <div class="roster-player">
       <div class="roster-avatar">${playerAvatarImg(player)}</div>
-      <div style="flex:1;min-width:0">
+      <div class="roster-meta">
         <div class="roster-ign">${escapeHTML(player.ign)}</div>
-        <div style="font-size:.7rem;color:var(--text-muted)">${fmtTeamNum(player.total_damage)} DMG · ${teamKd(player.kd)} K/D</div>
+        <div class="roster-stats"><span>${fmtCompact(player.total_damage)} DMG</span><span>${teamKd(player.kd)} K/D</span></div>
       </div>
     </div>`;
 }
 
 function teamCard(team, rank, qualified, reason) {
   return `
-    <div class="team-card reveal ${qualified ? 'is-qualified' : ''}">
+    <div class="team-card ${qualified ? 'is-qualified' : ''}">
       <div class="team-card-header">
         ${teamLogoHTML(team, 'lg')}
         <div style="min-width:0;flex:1">
@@ -262,7 +268,7 @@ function teamCard(team, rank, qualified, reason) {
       <div class="team-record">
         <div class="team-record-item"><div class="team-record-val" style="color:var(--clr-lime)">${team.wins || 0}</div><div class="team-record-key">W</div></div>
         <div class="team-record-item"><div class="team-record-val" style="color:var(--clr-purple-light)">${team.losses || 0}</div><div class="team-record-key">L</div></div>
-        <div class="team-record-item"><div class="team-record-val">${fmtTeamNum(team.total_damage)}</div><div class="team-record-key">DMG</div></div>
+        <div class="team-record-item"><div class="team-record-val">${fmtCompact(team.total_damage)}</div><div class="team-record-key">DMG</div></div>
         <div class="team-record-item"><div class="team-record-val">${teamKd(team.kd)}</div><div class="team-record-key">K/D</div></div>
       </div>
       <div class="team-roster">
@@ -386,5 +392,7 @@ async function loadTeams() {
 
 loadTeams();
 </script>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b125eacd76284d34887f566998affa97"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

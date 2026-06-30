@@ -12,17 +12,17 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <img src="assets/logo.png" alt="Slice Esports" class="logo-image">
       SLICE <span>LEAGUE</span>
     </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="bracket.html">Bracket</a>
-      <a href="players.html" class="active">Players</a>
-      <a href="teams.html">Teams</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="keytrade.html">Keytrade</a>
+      <a href="/">Home</a>
+      <a href="/bracket">Bracket</a>
+      <a href="/players" class="active">Players</a>
+      <a href="/teams">Teams</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/keytrade">Keytrade</a>
     </div>
     <div class="nav-actions">
       <div class="nav-socials">
@@ -35,12 +35,12 @@
   </div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Home</a>
-  <a href="bracket.html">Bracket</a>
-  <a href="players.html" class="active">Players</a>
-  <a href="teams.html">Teams</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="keytrade.html">Keytrade</a>
+  <a href="/">Home</a>
+  <a href="/bracket">Bracket</a>
+  <a href="/players" class="active">Players</a>
+  <a href="/teams">Teams</a>
+  <a href="/schedule">Schedule</a>
+  <a href="/keytrade">Keytrade</a>
 </div>
 
 <section style="padding-top: 56px;">
@@ -48,7 +48,7 @@
 
     <div class="reveal" id="playerPodium" style="margin-bottom: 56px;">
       <div class="section-label">Top Performers</div>
-      <h2 class="section-title" style="margin-bottom:24px">Damage <span>Podium</span></h2>
+      <h2 class="section-title" style="margin-bottom:24px">Player <span>Podium</span></h2>
       <div class="podium" id="podiumWrap">
         <div class="data-loading" style="width:100%"><i class="fas fa-spinner fa-spin"></i>Loading podium…</div>
       </div>
@@ -58,7 +58,7 @@
       <div class="flex-between mb-24">
         <div>
           <div class="section-label">Season 2</div>
-          <h2 class="section-title">Damage <span>Leaderboard</span></h2>
+          <h2 class="section-title">Player <span>Leaderboard</span></h2>
         </div>
         <div class="filter-bar" style="margin-bottom:0">
           <button class="filter-btn active" data-sort="damage">Total Damage</button>
@@ -99,7 +99,7 @@
     <div class="sponsor-strip-inner">
       <span class="sponsor-label-text">Official Sponsors</span>
       <div style="width: 1px; height: 24px; background: var(--border);"></div>
-      <a href="keytrade.html" class="keytrade-badge">
+      <a href="/keytrade" class="keytrade-badge">
         <div class="keytrade-badge-logo"><img src="assets/keytrade.png" alt="Keytrade"></div>
         <div class="keytrade-badge-text">
           <span class="keytrade-badge-name">Keytrade Bank</span>
@@ -122,9 +122,9 @@
           <a href="https://www.twitch.tv/yf7_bs" target="_blank"><i class="fab fa-twitch"></i></a>
         </div>
       </div>
-      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="bracket.html">Bracket</a></li><li><a href="schedule.html">Schedule</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="players.html">Players</a></li><li><a href="teams.html">Teams</a></li></ul></div>
-      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="keytrade.html">Keytrade Bank</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Tournament</div><ul><li><a href="/bracket">Bracket</a></li><li><a href="/schedule">Schedule</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Community</div><ul><li><a href="/players">Players</a></li><li><a href="/teams">Teams</a></li></ul></div>
+      <div class="footer-col"><div class="footer-col-title">Partners</div><ul><li><a href="/keytrade">Keytrade Bank</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 Slice League · All rights reserved</span>
@@ -180,6 +180,8 @@ function renderPodium(data) {
       <div class="podium-team">${p.team_abbr || p.team || ''}</div>
       <div class="podium-elims">${fmtNumber(p.total_damage || p.damage)}</div>
       <div class="podium-elim-label">Total Damage</div>
+      <div class="podium-kd">${playerKd(p)}</div>
+      <div class="podium-elim-label">K/D Ratio</div>
       <div class="podium-star"><i class="fas fa-star" style="color:var(--clr-gold);margin-right:6px"></i>${starRate(p)} Star Player</div>
     </div>
   `).join('');
@@ -271,5 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPlayers();
 });
 </script>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b125eacd76284d34887f566998affa97"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
